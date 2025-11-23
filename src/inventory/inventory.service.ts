@@ -1,9 +1,6 @@
-import {
-  Injectable,
-  NotFoundException,
-  BadRequestException,
-} from '@nestjs/common';
-import { v4 as uuidv4 } from 'uuid';
+import { Injectable, BadRequestException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { LessThanOrEqual, Repository } from 'typeorm';
 import {
   Inventory,
   InventoryTransaction,
@@ -15,34 +12,36 @@ import { AdjustInventoryDto } from './dto/adjust-inventory.dto';
 
 @Injectable()
 export class InventoryService {
-  private inventory: Map<string, Inventory> = new Map();
-  private transactions: InventoryTransaction[] = [];
+  constructor(
+    @InjectRepository(Inventory)
+    private readonly inventoryRepository: Repository<Inventory>,
+    @InjectRepository(InventoryTransaction)
+    private readonly transactionRepository: Repository<InventoryTransaction>,
+  ) {}
 
-  findAll(): Inventory[] {
-    return Array.from(this.inventory.values());
+  async findAll(): Promise<Inventory[]> {
+    return this.inventoryRepository.find({
+      relations: ['product'],
+      order: { lastUpdated: 'DESC' },
+    });
   }
 
-  findOne(productId: string): Inventory {
-    const inventory = this.inventory.get(productId);
-    if (!inventory) {
-      return {
-        id: uuidv4(),
-        productId,
-        quantity: 0,
-        reservedQuantity: 0,
-        availableQuantity: 0,
-        lastUpdated: new Date(),
-      };
-    }
-    return inventory;
+  async findOne(productId: string): Promise<Inventory> {
+    return this.ensureInventory(productId, true);
   }
 
-  import(importDto: ImportInventoryDto): InventoryTransaction {
-    const current = this.findOne(importDto.productId);
+  async import(importDto: ImportInventoryDto): Promise<InventoryTransaction> {
+    const current = await this.ensureInventory(importDto.productId);
     const newQuantity = current.quantity + importDto.quantity;
 
-    const transaction: InventoryTransaction = {
-      id: uuidv4(),
+    await this.inventoryRepository.save({
+      ...current,
+      reservedQuantity: current.reservedQuantity,
+      quantity: newQuantity,
+      availableQuantity: newQuantity - current.reservedQuantity,
+    });
+
+    const transaction = this.transactionRepository.create({
       productId: importDto.productId,
       type: InventoryTransactionType.IMPORT,
       quantity: importDto.quantity,
@@ -50,24 +49,13 @@ export class InventoryService {
       newQuantity,
       supplierId: importDto.supplierId,
       notes: importDto.notes,
-      createdAt: new Date(),
-    };
-
-    this.inventory.set(importDto.productId, {
-      id: current.id || uuidv4(),
-      productId: importDto.productId,
-      quantity: newQuantity,
-      reservedQuantity: current.reservedQuantity,
-      availableQuantity: newQuantity - current.reservedQuantity,
-      lastUpdated: new Date(),
     });
 
-    this.transactions.push(transaction);
-    return transaction;
+    return this.transactionRepository.save(transaction);
   }
 
-  export(exportDto: ExportInventoryDto): InventoryTransaction {
-    const current = this.findOne(exportDto.productId);
+  async export(exportDto: ExportInventoryDto): Promise<InventoryTransaction> {
+    const current = await this.ensureInventory(exportDto.productId);
 
     if (current.availableQuantity < exportDto.quantity) {
       throw new BadRequestException('Insufficient inventory');
@@ -75,8 +63,13 @@ export class InventoryService {
 
     const newQuantity = current.quantity - exportDto.quantity;
 
-    const transaction: InventoryTransaction = {
-      id: uuidv4(),
+    await this.inventoryRepository.save({
+      ...current,
+      quantity: newQuantity,
+      availableQuantity: newQuantity - current.reservedQuantity,
+    });
+
+    const transaction = this.transactionRepository.create({
       productId: exportDto.productId,
       type: InventoryTransactionType.EXPORT,
       quantity: exportDto.quantity,
@@ -84,63 +77,79 @@ export class InventoryService {
       newQuantity,
       orderId: exportDto.orderId,
       notes: exportDto.notes,
-      createdAt: new Date(),
-    };
-
-    this.inventory.set(exportDto.productId, {
-      id: current.id || uuidv4(),
-      productId: exportDto.productId,
-      quantity: newQuantity,
-      reservedQuantity: current.reservedQuantity,
-      availableQuantity: newQuantity - current.reservedQuantity,
-      lastUpdated: new Date(),
     });
 
-    this.transactions.push(transaction);
-    return transaction;
+    return this.transactionRepository.save(transaction);
   }
 
-  adjust(
+  async adjust(
     productId: string,
     adjustDto: AdjustInventoryDto,
-  ): InventoryTransaction {
-    const current = this.findOne(productId);
+  ): Promise<InventoryTransaction> {
+    const current = await this.ensureInventory(productId);
     const newQuantity = adjustDto.quantity;
 
-    const transaction: InventoryTransaction = {
-      id: uuidv4(),
+    await this.inventoryRepository.save({
+      ...current,
+      quantity: newQuantity,
+      availableQuantity: newQuantity - current.reservedQuantity,
+    });
+
+    const transaction = this.transactionRepository.create({
       productId,
       type: InventoryTransactionType.ADJUSTMENT,
       quantity: newQuantity - current.quantity,
       previousQuantity: current.quantity,
       newQuantity,
       reason: adjustDto.reason,
-      createdAt: new Date(),
-    };
-
-    this.inventory.set(productId, {
-      id: current.id || uuidv4(),
-      productId,
-      quantity: newQuantity,
-      reservedQuantity: current.reservedQuantity,
-      availableQuantity: newQuantity - current.reservedQuantity,
-      lastUpdated: new Date(),
     });
 
-    this.transactions.push(transaction);
-    return transaction;
+    return this.transactionRepository.save(transaction);
   }
 
-  getLowStock(threshold: number = 10): Inventory[] {
-    return Array.from(this.inventory.values()).filter(
-      (inv) => inv.availableQuantity <= threshold,
-    );
+  async getLowStock(threshold: number = 10): Promise<Inventory[]> {
+    return this.inventoryRepository.find({
+      where: {
+        availableQuantity: LessThanOrEqual(threshold),
+      },
+      relations: ['product'],
+      order: { availableQuantity: 'ASC' },
+    });
   }
 
-  getHistory(productId?: string): InventoryTransaction[] {
-    if (productId) {
-      return this.transactions.filter((t) => t.productId === productId);
+  async getHistory(productId?: string): Promise<InventoryTransaction[]> {
+    const where = productId ? { productId } : {};
+    return this.transactionRepository.find({
+      where,
+      relations: ['product'],
+      order: { createdAt: 'DESC' },
+    });
+  }
+
+  private async ensureInventory(
+    productId: string,
+    includeRelations = false,
+  ): Promise<Inventory> {
+    let inventory = await this.inventoryRepository.findOne({
+      where: { productId },
+      relations: includeRelations ? ['product'] : undefined,
+    });
+
+    if (!inventory) {
+      await this.inventoryRepository.save(
+        this.inventoryRepository.create({
+          productId,
+          quantity: 0,
+          reservedQuantity: 0,
+          availableQuantity: 0,
+        }),
+      );
+      inventory = await this.inventoryRepository.findOneOrFail({
+        where: { productId },
+        relations: includeRelations ? ['product'] : undefined,
+      });
     }
-    return this.transactions;
+
+    return inventory!;
   }
 }
