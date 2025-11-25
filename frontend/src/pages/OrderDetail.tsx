@@ -77,7 +77,7 @@ export default function OrderDetail() {
     };
     return (
       <span
-        className={`px-3 py-1 rounded text-sm font-medium ${statusStyle.bg} ${statusStyle.text}`}
+        className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap ${statusStyle.bg} ${statusStyle.text}`}
       >
         {statusStyle.label}
       </span>

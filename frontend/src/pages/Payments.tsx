@@ -75,7 +75,7 @@ export default function Payments() {
                     <td className="py-3 px-4">{payment.method || 'N/A'}</td>
                     <td className="py-3 px-4">
                       <span
-                        className={`px-2 py-1 rounded text-sm ${
+                        className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap ${
                           payment.status === 'completed'
                             ? 'bg-green-100 text-green-800'
                             : payment.status === 'pending'
@@ -83,7 +83,11 @@ export default function Payments() {
                               : 'bg-gray-100 text-gray-800'
                         }`}
                       >
-                        {payment.status}
+                        {payment.status === 'completed'
+                          ? 'Hoàn thành'
+                          : payment.status === 'pending'
+                            ? 'Đang chờ'
+                            : payment.status}
                       </span>
                     </td>
                     <td className="py-3 px-4">

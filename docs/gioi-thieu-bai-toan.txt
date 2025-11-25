@@ -1,0 +1,10 @@
+1.3 GIỚI THIỆU KHÁI QUÁT VỀ BÀI TOÁN
+
+Trong bối cảnh kinh tế hiện đại, việc quản lý bán hàng hiệu quả là một trong những yếu tố quan trọng quyết định sự thành công của các cửa hàng và doanh nghiệp. Với sự phát triển nhanh chóng của công nghệ thông tin, các phương pháp quản lý truyền thống bằng sổ sách hay Excel đã không còn đáp ứng được nhu cầu của các doanh nghiệp vừa và nhỏ trong việc quản lý một lượng lớn dữ liệu về sản phẩm, khách hàng, đơn hàng và kho hàng.
+
+Bài toán đặt ra là cần xây dựng một hệ thống quản lý bán hàng toàn diện, có khả năng hỗ trợ các cửa hàng và doanh nghiệp trong việc quản lý toàn bộ quy trình kinh doanh từ quản lý sản phẩm, danh mục, khách hàng, đến xử lý đơn hàng, quản lý kho hàng, thanh toán và báo cáo thống kê. Hệ thống cần đảm bảo tính chính xác, nhanh chóng và dễ sử dụng, đồng thời có khả năng mở rộng và tích hợp với các hệ thống khác trong tương lai.
+
+Cụ thể, bài toán yêu cầu giải quyết các vấn đề chính như: quản lý danh mục sản phẩm với cấu trúc đa cấp để dễ dàng phân loại và tìm kiếm; quản lý thông tin sản phẩm đầy đủ bao gồm giá cả, tồn kho, hình ảnh và các thuộc tính khác; quản lý thông tin khách hàng và lịch sử mua hàng để phục vụ tốt hơn; xử lý đơn hàng từ khi tạo đến khi hoàn thành với các trạng thái khác nhau; quản lý kho hàng với khả năng theo dõi nhập xuất và tồn kho theo thời gian thực; xử lý thanh toán với nhiều phương thức khác nhau; quản lý các chương trình khuyến mãi và giảm giá; và cuối cùng là cung cấp các báo cáo thống kê để hỗ trợ ra quyết định kinh doanh.
+
+Để giải quyết bài toán này, hệ thống được xây dựng dựa trên kiến trúc RESTful API sử dụng NestJS framework, kết hợp với PostgreSQL database và TypeORM để quản lý dữ liệu một cách hiệu quả. Hệ thống được thiết kế theo mô hình module hóa, mỗi module đảm nhận một chức năng cụ thể, giúp dễ dàng bảo trì và mở rộng. Với kiến trúc này, hệ thống không chỉ giải quyết được các vấn đề quản lý cơ bản mà còn có khả năng mở rộng để tích hợp thêm các tính năng nâng cao như authentication, real-time notifications, và tích hợp với các hệ thống thanh toán trực tuyến trong tương lai.
+

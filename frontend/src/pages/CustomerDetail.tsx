@@ -176,7 +176,7 @@ export default function CustomerDetail() {
                     </td>
                     <td className="py-3 px-4">
                       <span
-                        className={`px-2 py-1 rounded text-sm ${
+                        className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap ${
                           order.status === 'completed'
                             ? 'bg-green-100 text-green-800'
                             : order.status === 'pending'
@@ -184,7 +184,11 @@ export default function CustomerDetail() {
                               : 'bg-gray-100 text-gray-800'
                         }`}
                       >
-                        {order.status}
+                        {order.status === 'completed'
+                          ? 'Hoàn thành'
+                          : order.status === 'pending'
+                            ? 'Đang chờ'
+                            : order.status}
                       </span>
                     </td>
                     <td className="py-3 px-4">

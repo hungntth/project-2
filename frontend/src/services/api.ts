@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+// Use relative path in production, or env variable, or default to localhost for dev
 const API_BASE_URL =
-  import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+  import.meta.env.VITE_API_URL ||
+  (import.meta.env.PROD ? '/api' : 'http://localhost:3000/api');
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -71,6 +73,8 @@ export const inventoryApi = {
     api.get('/inventory/low-stock/list', { params: { threshold } }),
   getHistory: (productId?: string) =>
     api.get('/inventory/history/list', { params: { productId } }),
+  getPeriodInventory: (period: string, productId?: string) =>
+    api.get(`/inventory/period/${period}`, { params: { productId } }),
   import: (data: any) => api.post('/inventory/import', data),
   export: (data: any) => api.post('/inventory/export', data),
   adjust: (productId: string, data: any) =>

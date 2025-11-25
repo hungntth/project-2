@@ -38,6 +38,14 @@ export class InventoryController {
     return this.inventoryService.getHistory(productId);
   }
 
+  @Get('period/:period')
+  getPeriodInventory(
+    @Param('period') period: string,
+    @Query('productId') productId?: string,
+  ) {
+    return this.inventoryService.getPeriodInventory(period, productId);
+  }
+
   @Post('import')
   import(@Body() importDto: ImportInventoryDto) {
     return this.inventoryService.import(importDto);

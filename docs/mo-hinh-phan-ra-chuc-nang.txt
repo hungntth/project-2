@@ -1,0 +1,329 @@
+MÔ HÌNH PHÂN RÃ CHỨC NĂNG
+
+Mô hình phân rã chức năng là một công cụ quan trọng trong phân tích hệ thống, giúp chia nhỏ hệ thống phức tạp thành các chức năng con dễ quản lý và phát triển. Việc phân rã này cho phép chúng ta hiểu rõ cấu trúc của hệ thống, xác định các module độc lập, và thiết kế kiến trúc phù hợp. Dưới đây là mô hình phân rã chức năng chi tiết cho hệ thống quản lý bán hàng.
+
+CẤU TRÚC PHÂN CẤP CHỨC NĂNG
+
+Hệ thống Quản Lý Bán Hàng được phân rã thành các cấp độ như sau:
+
+Cấp 0: Hệ thống Quản Lý Bán Hàng
+
+Cấp 1: Các module chức năng chính
+
+1. Module Quản Lý Danh Mục (Categories Management)
+   1.1. Tạo danh mục mới
+       1.1.1. Nhập thông tin danh mục (tên, mô tả)
+       1.1.2. Chọn danh mục cha (nếu có)
+       1.1.3. Validate dữ liệu đầu vào
+       1.1.4. Lưu danh mục vào database
+   1.2. Cập nhật danh mục
+       1.2.1. Tìm kiếm danh mục theo ID
+       1.2.2. Cập nhật thông tin danh mục
+       1.2.3. Validate dữ liệu
+       1.2.4. Lưu thay đổi vào database
+   1.3. Xóa danh mục
+       1.3.1. Kiểm tra danh mục có danh mục con không
+       1.3.2. Kiểm tra danh mục có sản phẩm không
+       1.3.3. Xóa danh mục nếu không có ràng buộc
+   1.4. Xem danh sách danh mục
+       1.4.1. Lấy danh sách tất cả danh mục
+       1.4.2. Hiển thị cấu trúc cây (parent-child)
+       1.4.3. Phân trang kết quả
+   1.5. Tìm kiếm danh mục
+       1.5.1. Tìm theo tên
+       1.5.2. Lọc theo danh mục cha
+       1.5.3. Trả về kết quả tìm kiếm
+
+2. Module Quản Lý Sản Phẩm (Products Management)
+   2.1. Tạo sản phẩm mới
+       2.1.1. Nhập thông tin sản phẩm (tên, mô tả, giá)
+       2.1.2. Chọn danh mục sản phẩm
+       2.1.3. Nhập SKU, barcode (nếu có)
+       2.1.4. Upload hình ảnh sản phẩm
+       2.1.5. Validate dữ liệu
+       2.1.6. Lưu sản phẩm vào database
+   2.2. Cập nhật sản phẩm
+       2.2.1. Tìm kiếm sản phẩm theo ID
+       2.2.2. Cập nhật thông tin sản phẩm
+       2.2.3. Cập nhật hình ảnh (nếu có)
+       2.2.4. Validate dữ liệu
+       2.2.5. Lưu thay đổi vào database
+   2.3. Xóa sản phẩm
+       2.3.1. Kiểm tra sản phẩm có trong đơn hàng không
+       2.3.2. Kiểm tra sản phẩm có tồn kho không
+       2.3.3. Xóa sản phẩm nếu không có ràng buộc
+   2.4. Xem danh sách sản phẩm
+       2.4.1. Lấy danh sách sản phẩm
+       2.4.2. Lọc theo danh mục
+       2.4.3. Sắp xếp theo giá, tên
+       2.4.4. Phân trang kết quả
+   2.5. Tìm kiếm sản phẩm
+       2.5.1. Tìm theo tên
+       2.5.2. Tìm theo SKU
+       2.5.3. Tìm theo barcode
+       2.5.4. Trả về kết quả tìm kiếm
+   2.6. Xem chi tiết sản phẩm
+       2.6.1. Lấy thông tin sản phẩm theo ID
+       2.6.2. Lấy thông tin tồn kho
+       2.6.3. Hiển thị thông tin đầy đủ
+
+3. Module Quản Lý Khách Hàng (Customers Management)
+   3.1. Tạo khách hàng mới
+       3.1.1. Nhập thông tin khách hàng (tên, email, số điện thoại)
+       3.1.2. Nhập địa chỉ (nếu có)
+       3.1.3. Validate email và số điện thoại
+       3.1.4. Kiểm tra email đã tồn tại chưa
+       3.1.5. Lưu khách hàng vào database
+   3.2. Cập nhật thông tin khách hàng
+       3.2.1. Tìm kiếm khách hàng theo ID
+       3.2.2. Cập nhật thông tin
+       3.2.3. Validate dữ liệu
+       3.2.4. Lưu thay đổi vào database
+   3.3. Xóa khách hàng
+       3.3.1. Kiểm tra khách hàng có đơn hàng không
+       3.3.2. Xóa khách hàng nếu không có ràng buộc
+   3.4. Xem danh sách khách hàng
+       3.4.1. Lấy danh sách khách hàng
+       3.4.2. Phân trang kết quả
+       3.4.3. Sắp xếp theo tên, ngày tạo
+   3.5. Tìm kiếm khách hàng
+       3.5.1. Tìm theo tên
+       3.5.2. Tìm theo email
+       3.5.3. Tìm theo số điện thoại
+       3.5.4. Trả về kết quả tìm kiếm
+   3.6. Xem lịch sử mua hàng
+       3.6.1. Lấy danh sách đơn hàng của khách hàng
+       3.6.2. Hiển thị thông tin đơn hàng
+       3.6.3. Tính tổng giá trị đã mua
+
+4. Module Quản Lý Đơn Hàng (Orders Management)
+   4.1. Tạo đơn hàng mới
+       4.1.1. Chọn khách hàng
+       4.1.2. Thêm sản phẩm vào đơn hàng
+       4.1.3. Nhập số lượng cho từng sản phẩm
+       4.1.4. Kiểm tra tồn kho
+       4.1.5. Áp dụng khuyến mãi (nếu có)
+       4.1.6. Tính toán tổng tiền, thuế, giảm giá
+       4.1.7. Tạo đơn hàng và OrderItem
+       4.1.8. Cập nhật tồn kho
+       4.1.9. Tạo bản ghi InventoryTransaction
+   4.2. Xem danh sách đơn hàng
+       4.2.1. Lấy danh sách đơn hàng
+       4.2.2. Lọc theo trạng thái
+       4.2.3. Lọc theo khách hàng
+       4.2.4. Lọc theo khoảng thời gian
+       4.2.5. Phân trang kết quả
+   4.3. Xem chi tiết đơn hàng
+       4.3.1. Lấy thông tin đơn hàng theo ID
+       4.3.2. Lấy danh sách OrderItem
+       4.3.3. Lấy thông tin khách hàng
+       4.3.4. Lấy thông tin thanh toán (nếu có)
+       4.3.5. Hiển thị thông tin đầy đủ
+   4.4. Cập nhật trạng thái đơn hàng
+       4.4.1. Xác nhận đơn hàng (PENDING → CONFIRMED)
+       4.4.2. Xử lý đơn hàng (CONFIRMED → PROCESSING)
+       4.4.3. Giao hàng (PROCESSING → SHIPPED)
+       4.4.4. Hoàn thành (SHIPPED → DELIVERED)
+       4.4.5. Hủy đơn hàng (→ CANCELLED)
+       4.4.6. Cập nhật tồn kho khi hủy
+   4.5. Tính toán giá trị đơn hàng
+       4.5.1. Tính subtotal từ OrderItem
+       4.5.2. Áp dụng khuyến mãi
+       4.5.3. Tính thuế
+       4.5.4. Tính tổng tiền cuối cùng
+
+5. Module Quản Lý Kho Hàng (Inventory Management)
+   5.1. Xem tồn kho
+       5.1.1. Lấy danh sách tất cả sản phẩm và tồn kho
+       5.1.2. Hiển thị quantity, reservedQuantity, availableQuantity
+       5.1.3. Lọc theo sản phẩm
+       5.1.4. Sắp xếp theo số lượng
+   5.2. Nhập kho (IMPORT)
+       5.2.1. Chọn sản phẩm
+       5.2.2. Nhập số lượng nhập
+       5.2.3. Chọn nhà cung cấp (nếu có)
+       5.2.4. Nhập lý do và ghi chú
+       5.2.5. Lấy số lượng tồn kho hiện tại
+       5.2.6. Tính số lượng mới
+       5.2.7. Cập nhật bảng Inventory
+       5.2.8. Tạo InventoryTransaction với type IMPORT
+   5.3. Xuất kho (EXPORT)
+       5.3.1. Chọn sản phẩm
+       5.3.2. Nhập số lượng xuất
+       5.3.3. Liên kết với đơn hàng (nếu có)
+       5.3.4. Nhập lý do và ghi chú
+       5.3.5. Kiểm tra số lượng có sẵn
+       5.3.6. Tính số lượng mới
+       5.3.7. Cập nhật bảng Inventory
+       5.3.8. Tạo InventoryTransaction với type EXPORT
+   5.4. Điều chỉnh tồn kho (ADJUSTMENT)
+       5.4.1. Chọn sản phẩm
+       5.4.2. Nhập số lượng điều chỉnh
+       5.4.3. Nhập lý do điều chỉnh
+       5.4.4. Tính số lượng mới
+       5.4.5. Cập nhật bảng Inventory
+       5.4.6. Tạo InventoryTransaction với type ADJUSTMENT
+   5.5. Xem lịch sử giao dịch kho
+       5.5.1. Lấy danh sách InventoryTransaction
+       5.5.2. Lọc theo sản phẩm
+       5.5.3. Lọc theo loại giao dịch
+       5.5.4. Lọc theo khoảng thời gian
+       5.5.5. Phân trang kết quả
+
+6. Module Quản Lý Nhân Viên (Employees Management)
+   6.1. Tạo nhân viên mới
+       6.1.1. Nhập thông tin nhân viên (tên, email, số điện thoại)
+       6.1.2. Chọn vai trò (ADMIN, MANAGER, SALES, WAREHOUSE)
+       6.1.3. Nhập địa chỉ (nếu có)
+       6.1.4. Validate email
+       6.1.5. Kiểm tra email đã tồn tại chưa
+       6.1.6. Lưu nhân viên vào database
+   6.2. Cập nhật thông tin nhân viên
+       6.2.1. Tìm kiếm nhân viên theo ID
+       6.2.2. Cập nhật thông tin
+       6.2.3. Cập nhật vai trò
+       6.2.4. Validate dữ liệu
+       6.2.5. Lưu thay đổi vào database
+   6.3. Xóa nhân viên
+       6.3.1. Kiểm tra nhân viên có đơn hàng không
+       6.3.2. Xóa nhân viên nếu không có ràng buộc
+   6.4. Xem danh sách nhân viên
+       6.4.1. Lấy danh sách nhân viên
+       6.4.2. Lọc theo vai trò
+       6.4.3. Phân trang kết quả
+   6.5. Tìm kiếm nhân viên
+       6.5.1. Tìm theo tên
+       6.5.2. Tìm theo email
+       6.5.3. Trả về kết quả tìm kiếm
+
+7. Module Quản Lý Nhà Cung Cấp (Suppliers Management)
+   7.1. Tạo nhà cung cấp mới
+       7.1.1. Nhập thông tin nhà cung cấp (tên, tên công ty)
+       7.1.2. Nhập thông tin liên hệ (email, số điện thoại)
+       7.1.3. Nhập địa chỉ
+       7.1.4. Validate dữ liệu
+       7.1.5. Lưu nhà cung cấp vào database
+   7.2. Cập nhật thông tin nhà cung cấp
+       7.2.1. Tìm kiếm nhà cung cấp theo ID
+       7.2.2. Cập nhật thông tin
+       7.2.3. Validate dữ liệu
+       7.2.4. Lưu thay đổi vào database
+   7.3. Xóa nhà cung cấp
+       7.3.1. Kiểm tra nhà cung cấp có giao dịch kho không
+       7.3.2. Xóa nhà cung cấp nếu không có ràng buộc
+   7.4. Xem danh sách nhà cung cấp
+       7.4.1. Lấy danh sách nhà cung cấp
+       7.4.2. Phân trang kết quả
+   7.5. Tìm kiếm nhà cung cấp
+       7.5.1. Tìm theo tên
+       7.5.2. Tìm theo tên công ty
+       7.5.3. Trả về kết quả tìm kiếm
+
+8. Module Quản Lý Thanh Toán (Payments Management)
+   8.1. Tạo thanh toán
+       8.1.1. Chọn đơn hàng
+       8.1.2. Nhập số tiền thanh toán
+       8.1.3. Chọn phương thức thanh toán (CASH, CREDIT_CARD, BANK_TRANSFER, E_WALLET)
+       8.1.4. Nhập ghi chú (nếu có)
+       8.1.5. Kiểm tra số tiền khớp với tổng đơn hàng
+       8.1.6. Tạo bản ghi Payment với trạng thái PENDING
+       8.1.7. Xử lý thanh toán
+       8.1.8. Cập nhật trạng thái thanh toán
+       8.1.9. Cập nhật trạng thái đơn hàng
+   8.2. Xem danh sách thanh toán
+       8.2.1. Lấy danh sách thanh toán
+       8.2.2. Lọc theo trạng thái
+       8.2.3. Lọc theo phương thức
+       8.2.4. Lọc theo đơn hàng
+       8.2.5. Phân trang kết quả
+   8.3. Xem chi tiết thanh toán
+       8.3.1. Lấy thông tin thanh toán theo ID
+       8.3.2. Lấy thông tin đơn hàng liên quan
+       8.3.3. Hiển thị thông tin đầy đủ
+   8.4. Xử lý hoàn tiền
+       8.4.1. Chọn thanh toán cần hoàn tiền
+       8.4.2. Nhập lý do hoàn tiền
+       8.4.3. Cập nhật trạng thái thành REFUNDED
+       8.4.4. Cập nhật trạng thái đơn hàng
+
+9. Module Quản Lý Khuyến Mãi (Promotions Management)
+   9.1. Tạo khuyến mãi mới
+       9.1.1. Nhập tên và mô tả khuyến mãi
+       9.1.2. Chọn loại khuyến mãi (PERCENTAGE, FIXED_AMOUNT)
+       9.1.3. Nhập giá trị khuyến mãi
+       9.1.4. Chọn áp dụng cho sản phẩm hoặc danh mục
+       9.1.5. Nhập thời gian bắt đầu và kết thúc
+       9.1.6. Nhập giá trị đơn hàng tối thiểu (nếu có)
+       9.1.7. Validate dữ liệu
+       9.1.8. Lưu khuyến mãi vào database
+   9.2. Cập nhật khuyến mãi
+       9.2.1. Tìm kiếm khuyến mãi theo ID
+       9.2.2. Cập nhật thông tin
+       9.2.3. Validate dữ liệu
+       9.2.4. Lưu thay đổi vào database
+   9.3. Xóa khuyến mãi
+       9.3.1. Kiểm tra khuyến mãi có đang áp dụng không
+       9.3.2. Xóa khuyến mãi
+   9.4. Xem danh sách khuyến mãi
+       9.4.1. Lấy danh sách khuyến mãi
+       9.4.2. Lọc theo trạng thái (active/inactive)
+       9.4.3. Lọc theo thời gian
+       9.4.4. Phân trang kết quả
+   9.5. Kích hoạt/Vô hiệu hóa khuyến mãi
+       9.5.1. Cập nhật trạng thái isActive
+       9.5.2. Lưu thay đổi vào database
+   9.6. Áp dụng khuyến mãi cho đơn hàng
+       9.6.1. Tìm các khuyến mãi đang active
+       9.6.2. Kiểm tra điều kiện áp dụng
+       9.6.3. Tính toán giá trị giảm giá
+       9.6.4. Áp dụng vào đơn hàng
+
+10. Module Báo Cáo và Thống Kê (Reports and Statistics)
+    10.1. Dashboard tổng quan
+        10.1.1. Tính tổng doanh thu
+        10.1.2. Tính tổng số đơn hàng
+        10.1.3. Tính tổng số khách hàng
+        10.1.4. Tính tổng số sản phẩm
+        10.1.5. Hiển thị các chỉ số chính
+    10.2. Báo cáo doanh số
+        10.2.1. Lọc theo khoảng thời gian
+        10.2.2. Tính doanh số theo ngày/tuần/tháng
+        10.2.3. Hiển thị biểu đồ xu hướng
+        10.2.4. Xuất báo cáo
+    10.3. Báo cáo sản phẩm bán chạy
+        10.3.1. Tính số lượng bán ra của từng sản phẩm
+        10.3.2. Sắp xếp theo số lượng
+        10.3.3. Lọc theo khoảng thời gian
+        10.3.4. Hiển thị top sản phẩm
+    10.4. Báo cáo khách hàng
+        10.4.1. Tính tổng giá trị mua của từng khách hàng
+        10.4.2. Sắp xếp theo giá trị
+        10.4.3. Hiển thị top khách hàng
+    10.5. Báo cáo tồn kho
+        10.5.1. Liệt kê sản phẩm sắp hết hàng
+        10.5.2. Tính giá trị tồn kho
+        10.5.3. Hiển thị cảnh báo
+    10.6. Báo cáo doanh thu và lợi nhuận
+        10.6.1. Tính doanh thu từ đơn hàng
+        10.6.2. Tính chi phí từ giá vốn
+        10.6.3. Tính lợi nhuận
+        10.6.4. Hiển thị báo cáo chi tiết
+
+ĐẶC ĐIỂM CỦA MÔ HÌNH PHÂN RÃ
+
+Mô hình phân rã chức năng của hệ thống quản lý bán hàng có các đặc điểm sau:
+
+1. Tính độc lập: Mỗi module có thể hoạt động độc lập với các chức năng riêng biệt, nhưng vẫn có khả năng tương tác với các module khác thông qua các API.
+
+2. Tính mở rộng: Cấu trúc phân cấp cho phép dễ dàng thêm các chức năng mới vào từng module mà không ảnh hưởng đến các module khác.
+
+3. Tính tái sử dụng: Các chức năng con có thể được tái sử dụng trong nhiều ngữ cảnh khác nhau, ví dụ như validation dữ liệu, phân trang kết quả.
+
+4. Tính bảo trì: Việc phân rã rõ ràng giúp dễ dàng bảo trì và sửa lỗi, mỗi chức năng được tập trung vào một nhiệm vụ cụ thể.
+
+5. Tính tích hợp: Các module có thể tích hợp với nhau thông qua các luồng dữ liệu được định nghĩa rõ ràng, ví dụ như module Orders tích hợp với module Inventory và Promotions.
+
+KẾT LUẬN
+
+Mô hình phân rã chức năng cung cấp một cái nhìn toàn diện về cấu trúc và các chức năng của hệ thống quản lý bán hàng. Việc phân rã này giúp các nhà phát triển hiểu rõ từng phần của hệ thống, dễ dàng lập kế hoạch phát triển, và đảm bảo tính nhất quán trong quá trình triển khai. Mô hình này cũng là cơ sở quan trọng cho việc thiết kế database, API, và giao diện người dùng trong các bước tiếp theo.
+

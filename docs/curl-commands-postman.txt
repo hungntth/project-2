@@ -1,0 +1,198 @@
+CÁC LỆNH CURL ĐỂ TEST API TRONG POSTMAN
+
+Lưu ý: Thay thế http://localhost:3000 bằng URL thực tế của server nếu khác
+Thay thế các giá trị như customerId, productId, orderId bằng các ID thực tế từ database
+
+1. FORM TẠO ĐƠN HÀNG (POST /orders)
+
+curl --location 'http://localhost:3000/orders' \
+--header 'Content-Type: application/json' \
+--data '{
+    "customerId": "123e4567-e89b-12d3-a456-426614174000",
+    "items": [
+        {
+            "productId": "223e4567-e89b-12d3-a456-426614174001",
+            "quantity": 2
+        },
+        {
+            "productId": "323e4567-e89b-12d3-a456-426614174002",
+            "quantity": 1
+        }
+    ],
+    "notes": "Giao hàng vào buổi sáng"
+}'
+
+2. FORM XEM DANH SÁCH SẢN PHẨM (GET /products)
+
+curl --location 'http://localhost:3000/products?page=1&limit=10&categoryId=123e4567-e89b-12d3-a456-426614174000'
+
+Hoặc không có categoryId:
+curl --location 'http://localhost:3000/products?page=1&limit=10'
+
+3. FORM XEM CHI TIẾT ĐƠN HÀNG (GET /orders/:id)
+
+curl --location 'http://localhost:3000/orders/123e4567-e89b-12d3-a456-426614174000'
+
+4. FORM CẬP NHẬT TRẠNG THÁI ĐƠN HÀNG (PATCH /orders/:id/status)
+
+curl --location --request PATCH 'http://localhost:3000/orders/123e4567-e89b-12d3-a456-426614174000/status' \
+--header 'Content-Type: application/json' \
+--data '{
+    "status": "CONFIRMED"
+}'
+
+Các giá trị status có thể: "PENDING", "CONFIRMED", "PROCESSING", "SHIPPED", "DELIVERED", "CANCELLED"
+
+5. FORM NHẬP KHO (POST /inventory/import)
+
+curl --location 'http://localhost:3000/inventory/import' \
+--header 'Content-Type: application/json' \
+--data '{
+    "productId": "223e4567-e89b-12d3-a456-426614174001",
+    "quantity": 100,
+    "supplierId": "423e4567-e89b-12d3-a456-426614174003",
+    "reason": "Nhập hàng từ nhà cung cấp",
+    "notes": "Hàng mới về"
+}'
+
+6. FORM XEM BÁO CÁO DOANH SỐ (GET /reports/sales)
+
+curl --location 'http://localhost:3000/reports/sales?startDate=2024-01-01&endDate=2024-12-31'
+
+7. FORM TẠO KHUYẾN MÃI (POST /promotions)
+
+curl --location 'http://localhost:3000/promotions' \
+--header 'Content-Type: application/json' \
+--data '{
+    "name": "Giảm giá 20% cho sản phẩm điện tử",
+    "description": "Áp dụng cho tất cả sản phẩm trong danh mục điện tử",
+    "type": "PERCENTAGE",
+    "value": 20,
+    "startDate": "2024-01-01T00:00:00Z",
+    "endDate": "2024-12-31T23:59:59Z",
+    "categoryId": "123e4567-e89b-12d3-a456-426614174000",
+    "minPurchaseAmount": 500000
+}'
+
+Hoặc khuyến mãi theo sản phẩm cụ thể:
+curl --location 'http://localhost:3000/promotions' \
+--header 'Content-Type: application/json' \
+--data '{
+    "name": "Giảm 50.000đ cho sản phẩm A",
+    "description": "Khuyến mãi đặc biệt",
+    "type": "FIXED_AMOUNT",
+    "value": 50000,
+    "startDate": "2024-01-01T00:00:00Z",
+    "endDate": "2024-12-31T23:59:59Z",
+    "productId": "223e4567-e89b-12d3-a456-426614174001"
+}'
+
+8. FORM XEM DASHBOARD (GET /reports/dashboard)
+
+curl --location 'http://localhost:3000/reports/dashboard'
+
+CÁC API ENDPOINTS BỔ SUNG
+
+9. TẠO KHÁCH HÀNG MỚI (POST /customers)
+
+curl --location 'http://localhost:3000/customers' \
+--header 'Content-Type: application/json' \
+--data '{
+    "name": "Nguyễn Văn A",
+    "email": "nguyenvana@example.com",
+    "phone": "0123456789",
+    "address": "123 Đường ABC",
+    "city": "Hà Nội",
+    "country": "Việt Nam"
+}'
+
+10. TẠO SẢN PHẨM MỚI (POST /products)
+
+curl --location 'http://localhost:3000/products' \
+--header 'Content-Type: application/json' \
+--data '{
+    "name": "Laptop Dell XPS 15",
+    "description": "Laptop cao cấp với màn hình 15 inch",
+    "categoryId": "123e4567-e89b-12d3-a456-426614174000",
+    "price": 25000000,
+    "costPrice": 20000000,
+    "sku": "LAP-DELL-XPS15",
+    "barcode": "1234567890123",
+    "unit": "cái"
+}'
+
+11. XEM DANH SÁCH ĐƠN HÀNG (GET /orders)
+
+curl --location 'http://localhost:3000/orders?page=1&limit=10&status=CONFIRMED'
+
+12. XEM TỒN KHO (GET /inventory)
+
+curl --location 'http://localhost:3000/inventory?productId=223e4567-e89b-12d3-a456-426614174001'
+
+13. XUẤT KHO (POST /inventory/export)
+
+curl --location 'http://localhost:3000/inventory/export' \
+--header 'Content-Type: application/json' \
+--data '{
+    "productId": "223e4567-e89b-12d3-a456-426614174001",
+    "quantity": 10,
+    "orderId": "123e4567-e89b-12d3-a456-426614174000",
+    "reason": "Xuất hàng cho đơn hàng",
+    "notes": "Giao hàng cho khách"
+}'
+
+14. TẠO THANH TOÁN (POST /payments)
+
+curl --location 'http://localhost:3000/payments' \
+--header 'Content-Type: application/json' \
+--data '{
+    "orderId": "123e4567-e89b-12d3-a456-426614174000",
+    "amount": 5000000,
+    "method": "CASH",
+    "notes": "Thanh toán tiền mặt"
+}'
+
+Các giá trị method có thể: "CASH", "CREDIT_CARD", "BANK_TRANSFER", "E_WALLET"
+
+15. XEM BÁO CÁO SẢN PHẨM BÁN CHẠY (GET /reports/products)
+
+curl --location 'http://localhost:3000/reports/products?startDate=2024-01-01&endDate=2024-12-31'
+
+16. XEM BÁO CÁO KHÁCH HÀNG (GET /reports/customers)
+
+curl --location 'http://localhost:3000/reports/customers?startDate=2024-01-01&endDate=2024-12-31'
+
+17. XEM BÁO CÁO TỒN KHO (GET /reports/inventory)
+
+curl --location 'http://localhost:3000/reports/inventory'
+
+18. XEM BÁO CÁO DOANH THU (GET /reports/revenue)
+
+curl --location 'http://localhost:3000/reports/revenue?startDate=2024-01-01&endDate=2024-12-31'
+
+19. XEM BÁO CÁO LỢI NHUẬN (GET /reports/profit)
+
+curl --location 'http://localhost:3000/reports/profit?startDate=2024-01-01&endDate=2024-12-31'
+
+HƯỚNG DẪN SỬ DỤNG TRONG POSTMAN
+
+1. Import vào Postman:
+   - Mở Postman
+   - Click "Import" ở góc trên bên trái
+   - Chọn tab "Raw text"
+   - Copy và paste từng lệnh curl vào
+   - Postman sẽ tự động chuyển đổi thành request
+
+2. Hoặc tạo request thủ công:
+   - Click "New" → "HTTP Request"
+   - Chọn method (GET, POST, PATCH, DELETE)
+   - Nhập URL
+   - Với POST/PATCH: Vào tab "Body" → chọn "raw" → chọn "JSON" → paste JSON body
+   - Với GET: Vào tab "Params" để thêm query parameters
+
+3. Lưu ý:
+   - Đảm bảo server đang chạy trước khi test
+   - Thay thế các UUID mẫu bằng các ID thực tế từ database
+   - Kiểm tra Content-Type header là "application/json" cho POST/PATCH requests
+   - Với các request cần authentication, thêm header Authorization nếu có
+

@@ -1,0 +1,171 @@
+2.1 PHÂN TÍCH VỀ CHỨC NĂNG
+
+Phân tích về chức năng là bước quan trọng trong quá trình phân tích và thiết kế hệ thống, giúp xác định rõ các chức năng mà hệ thống cần thực hiện để đáp ứng yêu cầu của người dùng. Thông qua phân tích chức năng, chúng ta có thể hiểu được cách hệ thống hoạt động, các luồng xử lý dữ liệu, và mối quan hệ giữa các thành phần trong hệ thống. Phần này sẽ trình bày mô hình phân rã chức năng và các mô hình luồng dữ liệu mức đỉnh cho các chức năng chính của hệ thống quản lý bán hàng.
+
+1. MÔ HÌNH PHÂN RÃ CHỨC NĂNG
+
+Hệ thống quản lý bán hàng được phân rã thành các module chức năng chính, mỗi module đảm nhận một nhóm chức năng liên quan đến nhau. Việc phân rã này giúp hệ thống dễ dàng phát triển, bảo trì và mở rộng. Dưới đây là mô hình phân rã chức năng của hệ thống:
+
+Hệ thống quản lý bán hàng được chia thành 10 module chính:
+
+Module 1: Quản lý Danh mục (Categories Management)
+Chức năng chính:
+- Tạo, sửa, xóa danh mục sản phẩm
+- Xem danh sách danh mục
+- Quản lý cấu trúc danh mục đa cấp (parent-child)
+- Tìm kiếm và lọc danh mục
+
+Module 2: Quản lý Sản phẩm (Products Management)
+Chức năng chính:
+- Tạo, sửa, xóa thông tin sản phẩm
+- Xem danh sách sản phẩm với phân trang
+- Tìm kiếm sản phẩm theo tên, SKU, barcode
+- Quản lý giá cả, hình ảnh sản phẩm
+- Phân loại sản phẩm theo danh mục
+
+Module 3: Quản lý Khách hàng (Customers Management)
+Chức năng chính:
+- Tạo, sửa, xóa thông tin khách hàng
+- Xem danh sách khách hàng
+- Tìm kiếm khách hàng theo tên, email, số điện thoại
+- Xem lịch sử mua hàng của khách hàng
+
+Module 4: Quản lý Đơn hàng (Orders Management)
+Chức năng chính:
+- Tạo đơn hàng mới với chi tiết sản phẩm
+- Xem danh sách đơn hàng với các bộ lọc
+- Xem chi tiết đơn hàng
+- Cập nhật trạng thái đơn hàng (PENDING, CONFIRMED, PROCESSING, SHIPPED, DELIVERED, CANCELLED)
+- Tính toán tự động tổng tiền, thuế, giảm giá
+- Áp dụng khuyến mãi cho đơn hàng
+
+Module 5: Quản lý Kho hàng (Inventory Management)
+Chức năng chính:
+- Xem tồn kho hiện tại của tất cả sản phẩm
+- Nhập kho (IMPORT) - thêm hàng vào kho
+- Xuất kho (EXPORT) - xuất hàng ra khỏi kho
+- Điều chỉnh tồn kho (ADJUSTMENT) - điều chỉnh số lượng
+- Xem lịch sử giao dịch kho
+- Quản lý số lượng tồn kho, số lượng đã reserve, số lượng có sẵn
+
+Module 6: Quản lý Nhân viên (Employees Management)
+Chức năng chính:
+- Tạo, sửa, xóa thông tin nhân viên
+- Xem danh sách nhân viên
+- Phân quyền nhân viên theo vai trò (ADMIN, MANAGER, SALES, WAREHOUSE)
+- Tìm kiếm nhân viên
+
+Module 7: Quản lý Nhà cung cấp (Suppliers Management)
+Chức năng chính:
+- Tạo, sửa, xóa thông tin nhà cung cấp
+- Xem danh sách nhà cung cấp
+- Tìm kiếm nhà cung cấp
+- Quản lý thông tin liên hệ với nhà cung cấp
+
+Module 8: Quản lý Thanh toán (Payments Management)
+Chức năng chính:
+- Tạo giao dịch thanh toán cho đơn hàng
+- Xử lý thanh toán với nhiều phương thức (CASH, CREDIT_CARD, BANK_TRANSFER, E_WALLET)
+- Cập nhật trạng thái thanh toán (PENDING, COMPLETED, FAILED, REFUNDED)
+- Xem lịch sử thanh toán
+- Xử lý hoàn tiền
+
+Module 9: Quản lý Khuyến mãi (Promotions Management)
+Chức năng chính:
+- Tạo, sửa, xóa chương trình khuyến mãi
+- Áp dụng khuyến mãi theo sản phẩm hoặc danh mục
+- Quản lý thời gian áp dụng khuyến mãi
+- Các loại khuyến mãi: giảm giá theo phần trăm, giảm giá theo số tiền cố định
+- Kích hoạt hoặc vô hiệu hóa khuyến mãi
+
+Module 10: Báo cáo và Thống kê (Reports and Statistics)
+Chức năng chính:
+- Dashboard tổng quan với các chỉ số chính
+- Báo cáo doanh số theo thời gian
+- Báo cáo sản phẩm bán chạy
+- Báo cáo khách hàng
+- Báo cáo tồn kho
+- Báo cáo doanh thu và lợi nhuận
+- Lọc và xuất báo cáo
+
+2. CÁC MÔ HÌNH LUỒNG DỮ LIỆU MỨC ĐỈNH
+
+Mô hình luồng dữ liệu mức đỉnh mô tả cách dữ liệu được xử lý và luân chuyển giữa các thành phần của hệ thống. Dưới đây là các mô hình luồng dữ liệu mức đỉnh cho các chức năng quan trọng:
+
+Mô hình luồng dữ liệu mức đỉnh cho chức năng số 1: Tạo đơn hàng
+
+Luồng xử lý:
+1. Người dùng gửi yêu cầu tạo đơn hàng (Request) chứa thông tin: customerId, danh sách sản phẩm với số lượng, ghi chú
+2. Hệ thống nhận yêu cầu và kiểm tra tính hợp lệ của dữ liệu đầu vào
+3. Hệ thống truy vấn thông tin khách hàng từ module Customers để xác nhận khách hàng tồn tại
+4. Hệ thống truy vấn thông tin sản phẩm từ module Products để lấy giá và thông tin sản phẩm
+5. Hệ thống kiểm tra tồn kho từ module Inventory để đảm bảo có đủ hàng
+6. Hệ thống truy vấn các khuyến mãi đang áp dụng từ module Promotions
+7. Hệ thống tính toán giá trị đơn hàng: subtotal, discount từ khuyến mãi, tax, total
+8. Hệ thống tạo đơn hàng mới trong database với trạng thái PENDING
+9. Hệ thống tạo các OrderItem tương ứng với từng sản phẩm
+10. Hệ thống cập nhật tồn kho: trừ số lượng đã bán và tăng reservedQuantity
+11. Hệ thống tạo bản ghi InventoryTransaction với type EXPORT
+12. Hệ thống trả về thông tin đơn hàng đã tạo (Response) cho người dùng
+
+Các luồng dữ liệu:
+- Request → Orders Module → Customers Module (truy vấn khách hàng)
+- Orders Module → Products Module (truy vấn sản phẩm)
+- Orders Module → Inventory Module (kiểm tra và cập nhật tồn kho)
+- Orders Module → Promotions Module (truy vấn khuyến mãi)
+- Orders Module → Database (lưu đơn hàng)
+- Database → Orders Module → Response
+
+Mô hình luồng dữ liệu mức đỉnh cho chức năng số 2: Quản lý nhập xuất kho
+
+Luồng xử lý cho nhập kho (IMPORT):
+1. Người dùng gửi yêu cầu nhập kho (Request) chứa: productId, quantity, supplierId, reason, notes
+2. Hệ thống nhận yêu cầu và kiểm tra tính hợp lệ
+3. Hệ thống truy vấn thông tin sản phẩm từ module Products để xác nhận sản phẩm tồn tại
+4. Hệ thống truy vấn thông tin nhà cung cấp từ module Suppliers (nếu có)
+5. Hệ thống lấy số lượng tồn kho hiện tại từ module Inventory
+6. Hệ thống tính toán số lượng mới: newQuantity = previousQuantity + quantity
+7. Hệ thống cập nhật bảng Inventory: tăng quantity và availableQuantity
+8. Hệ thống tạo bản ghi InventoryTransaction với type IMPORT, lưu previousQuantity và newQuantity
+9. Hệ thống trả về thông tin giao dịch đã tạo (Response)
+
+Luồng xử lý cho xuất kho (EXPORT):
+1. Người dùng gửi yêu cầu xuất kho (Request) chứa: productId, quantity, orderId (nếu có), reason, notes
+2. Hệ thống nhận yêu cầu và kiểm tra tính hợp lệ
+3. Hệ thống truy vấn thông tin sản phẩm từ module Products
+4. Hệ thống kiểm tra số lượng tồn kho có sẵn (availableQuantity) có đủ không
+5. Nếu đủ, hệ thống lấy số lượng tồn kho hiện tại
+6. Hệ thống tính toán số lượng mới: newQuantity = previousQuantity - quantity
+7. Hệ thống cập nhật bảng Inventory: giảm quantity và availableQuantity
+8. Hệ thống tạo bản ghi InventoryTransaction với type EXPORT
+9. Hệ thống trả về thông tin giao dịch (Response)
+
+Các luồng dữ liệu:
+- Request → Inventory Module → Products Module (truy vấn sản phẩm)
+- Inventory Module → Suppliers Module (truy vấn nhà cung cấp - nếu có)
+- Inventory Module → Database (lưu giao dịch và cập nhật tồn kho)
+- Database → Inventory Module → Response
+
+Mô hình luồng dữ liệu mức đỉnh cho chức năng số 3: Xử lý thanh toán
+
+Luồng xử lý:
+1. Người dùng gửi yêu cầu tạo thanh toán (Request) chứa: orderId, amount, method, notes
+2. Hệ thống nhận yêu cầu và kiểm tra tính hợp lệ
+3. Hệ thống truy vấn thông tin đơn hàng từ module Orders để xác nhận đơn hàng tồn tại và chưa thanh toán
+4. Hệ thống kiểm tra số tiền thanh toán có khớp với tổng tiền đơn hàng không
+5. Hệ thống tạo bản ghi Payment trong database với trạng thái PENDING
+6. Hệ thống xử lý thanh toán theo phương thức (giả lập hoặc tích hợp với payment gateway)
+7. Nếu thanh toán thành công, hệ thống cập nhật trạng thái Payment thành COMPLETED
+8. Hệ thống cập nhật trạng thái đơn hàng từ PENDING hoặc CONFIRMED thành PROCESSING
+9. Hệ thống trả về thông tin thanh toán đã xử lý (Response)
+
+Các luồng dữ liệu:
+- Request → Payments Module → Orders Module (truy vấn đơn hàng)
+- Payments Module → Database (lưu thanh toán)
+- Payments Module → Orders Module (cập nhật trạng thái đơn hàng)
+- Database → Payments Module → Response
+
+KẾT LUẬN
+
+Phân tích về chức năng giúp chúng ta hiểu rõ cách hệ thống hoạt động và các luồng xử lý dữ liệu. Mô hình phân rã chức năng cho thấy hệ thống được tổ chức thành các module độc lập nhưng có mối liên hệ chặt chẽ với nhau. Các mô hình luồng dữ liệu mức đỉnh mô tả chi tiết cách dữ liệu được xử lý trong các chức năng quan trọng, giúp đảm bảo tính chính xác và hiệu quả của hệ thống. Việc phân tích này là nền tảng quan trọng cho việc thiết kế chi tiết và triển khai hệ thống trong các bước tiếp theo.
+

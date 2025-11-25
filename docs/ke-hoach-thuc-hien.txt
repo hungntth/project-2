@@ -1,0 +1,259 @@
+KẾ HOẠCH THỰC HIỆN DỰ ÁN
+
+TỔNG QUAN
+
+Dự án Hệ Thống Quản Lý Bán Hàng được thực hiện theo phương pháp phát triển tăng dần (Incremental Development), chia thành 4 giai đoạn chính với các mốc thời gian và mục tiêu cụ thể. Mỗi giai đoạn tập trung vào việc hoàn thiện một nhóm chức năng nhất định, đảm bảo hệ thống được xây dựng một cách có hệ thống và có thể kiểm thử ngay từng phần.
+
+
+GIAI ĐOẠN 1: THIẾT KẾ VÀ LẬP KẾ HOẠCH
+
+Thời gian dự kiến: 1-2 tuần
+
+Mục tiêu: Xây dựng nền tảng và kế hoạch chi tiết cho toàn bộ dự án
+
+Các công việc chính:
+
+1. Phân tích yêu cầu
+   - Thu thập và phân tích các yêu cầu chức năng
+   - Xác định các module cần phát triển
+   - Phân tích các use cases chính của hệ thống
+
+2. Thiết kế Database Schema
+   - Thiết kế ERD (Entity Relationship Diagram)
+   - Xác định các entities và quan hệ giữa chúng
+   - Thiết kế các bảng và ràng buộc (constraints)
+   - Xác định các indexes cần thiết
+
+3. Thiết kế API Architecture
+   - Xác định các RESTful endpoints
+   - Thiết kế cấu trúc DTOs (Data Transfer Objects)
+   - Xác định các validation rules
+
+4. Lập kế hoạch phát triển
+   - Chia nhỏ các module thành các task cụ thể
+   - Ưu tiên các module cơ bản trước
+   - Xác định dependencies giữa các module
+
+5. Thiết lập môi trường phát triển
+   - Cài đặt Node.js và các công cụ cần thiết
+   - Thiết lập PostgreSQL database
+   - Cấu hình Git repository
+   - Thiết lập các công cụ hỗ trợ (ESLint, Prettier)
+
+
+GIAI ĐOẠN 2: PHÁT TRIỂN CƠ BẢN
+
+Thời gian dự kiến: 3-4 tuần
+
+Mục tiêu: Xây dựng các module cơ bản và thiết lập cấu trúc dự án
+
+2.1. Thiết lập dự án NestJS (Tuần 1)
+- Khởi tạo dự án NestJS
+- Cấu hình TypeScript và các dependencies cơ bản
+- Thiết lập cấu trúc thư mục theo chuẩn NestJS
+- Cấu hình TypeORM và kết nối PostgreSQL
+- Thiết lập ConfigModule cho quản lý environment variables
+- Cấu hình logging và error handling cơ bản
+
+2.2. Xây dựng các Entities cơ bản (Tuần 1-2)
+
+Module Categories:
+- Tạo Category entity với self-referencing relationship
+- Implement CRUD operations cho Categories
+- Validation và error handling
+
+Module Products:
+- Tạo Product entity với quan hệ ManyToOne với Category
+- Implement CRUD operations cho Products
+- Xử lý upload và quản lý hình ảnh sản phẩm
+- Validation cho giá, SKU, barcode
+
+Module Customers:
+- Tạo Customer entity
+- Implement CRUD operations cho Customers
+- Validation cho email, phone
+
+Module Employees:
+- Tạo Employee entity với enum cho roles
+- Implement CRUD operations cho Employees
+- Validation và phân quyền cơ bản
+
+Module Suppliers:
+- Tạo Supplier entity
+- Implement CRUD operations cho Suppliers
+
+2.3. Xây dựng Module Orders (Tuần 2-3)
+- Tạo Order và OrderItem entities
+- Thiết lập quan hệ với Customer và Employee
+- Implement các chức năng:
+  - Tạo đơn hàng mới
+  - Xem danh sách đơn hàng
+  - Xem chi tiết đơn hàng
+  - Cập nhật trạng thái đơn hàng
+  - Tính toán tổng tiền, thuế, giảm giá
+
+2.4. Xây dựng Module Inventory (Tuần 3-4)
+- Tạo Inventory và InventoryTransaction entities
+- Thiết kế hệ thống tracking tồn kho
+- Implement các chức năng:
+  - Xem tồn kho hiện tại
+  - Nhập kho (IMPORT)
+  - Xuất kho (EXPORT)
+  - Điều chỉnh tồn kho (ADJUSTMENT)
+  - Lịch sử giao dịch kho
+
+
+GIAI ĐOẠN 3: TÍCH HỢP VÀ NÂNG CAO
+
+Thời gian dự kiến: 3-4 tuần
+
+Mục tiêu: Phát triển các chức năng nâng cao và tích hợp các module
+
+3.1. Module Payments (Tuần 1)
+- Tạo Payment entity với quan hệ với Order
+- Implement các phương thức thanh toán:
+  - Tiền mặt (CASH)
+  - Thẻ tín dụng (CREDIT_CARD)
+  - Chuyển khoản (BANK_TRANSFER)
+  - Ví điện tử (E_WALLET)
+- Xử lý trạng thái thanh toán
+- Tích hợp với module Orders
+
+3.2. Module Promotions (Tuần 1-2)
+- Tạo Promotion entity
+- Thiết kế hệ thống khuyến mãi linh hoạt:
+  - Khuyến mãi theo sản phẩm
+  - Khuyến mãi theo danh mục
+  - Khuyến mãi theo giá trị đơn hàng
+- Implement các loại khuyến mãi:
+  - Giảm giá theo phần trăm
+  - Giảm giá theo số tiền cố định
+- Quản lý thời gian áp dụng khuyến mãi
+- Tích hợp tính toán khuyến mãi vào Orders
+
+3.3. Tích hợp và Logic Nghiệp Vụ (Tuần 2-3)
+
+Tích hợp Orders với Inventory:
+- Tự động trừ tồn kho khi tạo đơn hàng
+- Kiểm tra tồn kho trước khi tạo đơn hàng
+- Cập nhật tồn kho khi hủy đơn hàng
+- Reserve quantity cho đơn hàng đang xử lý
+
+Tích hợp Orders với Promotions:
+- Áp dụng khuyến mãi tự động khi tạo đơn hàng
+- Tính toán giá sau khuyến mãi
+- Validate điều kiện khuyến mãi
+
+Tích hợp Orders với Payments:
+- Tạo payment record khi đơn hàng được xác nhận
+- Cập nhật trạng thái đơn hàng khi thanh toán thành công
+- Xử lý hoàn tiền và hủy thanh toán
+
+3.4. Module Reports (Tuần 3-4)
+- Xây dựng các báo cáo cơ bản:
+  - Dashboard tổng quan
+  - Báo cáo doanh số theo thời gian
+  - Báo cáo sản phẩm bán chạy
+  - Báo cáo khách hàng
+  - Báo cáo tồn kho
+  - Báo cáo doanh thu và lợi nhuận
+- Implement filtering và pagination cho reports
+- Tối ưu hóa queries cho các báo cáo
+
+
+GIAI ĐOẠN 4: HOÀN THIỆN
+
+Thời gian dự kiến: 2-3 tuần
+
+Mục tiêu: Kiểm thử, tối ưu hóa và hoàn thiện hệ thống
+
+4.1. Testing (Tuần 1-2)
+
+Unit Testing:
+- Viết unit tests cho các services
+- Test các business logic quan trọng
+- Đảm bảo code coverage > 70%
+
+Integration Testing:
+- Test các API endpoints
+- Test tích hợp giữa các modules
+- Test các flow nghiệp vụ phức tạp
+
+E2E Testing:
+- Test các user flows chính
+- Test các edge cases
+- Test error handling
+
+4.2. Tối Ưu Hóa (Tuần 2)
+
+Database Optimization:
+- Thêm indexes cho các queries thường dùng
+- Tối ưu hóa các queries phức tạp
+- Phân tích và cải thiện query performance
+
+Code Optimization:
+- Refactor code để cải thiện readability
+- Loại bỏ code duplicate
+- Tối ưu hóa imports và dependencies
+
+API Optimization:
+- Implement pagination cho các endpoints list
+- Thêm caching nếu cần thiết
+- Tối ưu hóa response time
+
+4.3. Tài Liệu và Hướng Dẫn (Tuần 2-3)
+
+Tài liệu kỹ thuật:
+- README.md với hướng dẫn cài đặt
+- API documentation
+- Database schema documentation
+- Code comments cho các module quan trọng
+
+Tài liệu nghiệp vụ:
+- Tài liệu mô tả các chức năng
+- Hướng dẫn sử dụng API
+- Tài liệu về khung cảnh thực hiện
+- Tài liệu về yêu cầu thực tập
+
+4.4. Deployment và Hoàn Thiện (Tuần 3)
+- Chuẩn bị môi trường production
+- Cấu hình environment variables
+- Setup database cho production
+- Test trên môi trường production
+- Final review và bug fixes
+
+
+TIMELINE TỔNG QUAN
+
+Tuần 1-2:   Giai đoạn 1 - Thiết kế và Lập kế hoạch
+Tuần 3-6:   Giai đoạn 2 - Phát triển cơ bản
+Tuần 7-10:  Giai đoạn 3 - Tích hợp và Nâng cao
+Tuần 11-13: Giai đoạn 4 - Hoàn thiện
+
+Tổng thời gian dự kiến: 10-13 tuần
+
+
+RỦI RO VÀ GIẢI PHÁP
+
+Rủi ro tiềm ẩn:
+
+1. Thiếu kinh nghiệm với NestJS/TypeORM
+   Giải pháp: Dành thời gian học tập và thực hành trước khi bắt đầu code chính thức
+
+2. Thiết kế database không tối ưu
+   Giải pháp: Review và refactor database schema ở giai đoạn đầu, tham khảo best practices
+
+3. Thời gian phát triển vượt dự kiến
+   Giải pháp: Ưu tiên các chức năng core trước, các tính năng nâng cao có thể làm sau
+
+4. Lỗi tích hợp giữa các modules
+   Giải pháp: Test tích hợp thường xuyên, không đợi đến cuối mới test
+
+5. Performance issues với database
+   Giải pháp: Monitor và optimize queries ngay từ đầu, sử dụng indexes hợp lý
+
+
+KẾT LUẬN
+
+Kế hoạch thực hiện được thiết kế để đảm bảo dự án được hoàn thành đúng thời hạn với chất lượng cao. Việc chia nhỏ thành các giai đoạn và tuần giúp dễ dàng theo dõi tiến độ và điều chỉnh khi cần thiết. Mỗi giai đoạn đều có mục tiêu rõ ràng và có thể deliver được các tính năng cụ thể, giúp dự án luôn có giá trị sử dụng ngay cả trong quá trình phát triển.
+

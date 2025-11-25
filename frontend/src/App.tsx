@@ -1,5 +1,5 @@
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Routes,
   Route,
   Navigate,
@@ -21,6 +21,7 @@ import CategoryCreate from './pages/CategoryCreate';
 import Employees from './pages/Employees';
 import EmployeeCreate from './pages/EmployeeCreate';
 import Inventory from './pages/Inventory';
+import InventoryPeriod from './pages/InventoryPeriod';
 import Payments from './pages/Payments';
 import Promotions from './pages/Promotions';
 import Suppliers from './pages/Suppliers';
@@ -60,6 +61,7 @@ function App() {
 
           {/* Inventory Routes */}
           <Route path="/inventory" element={<Inventory />} />
+          <Route path="/inventory/period" element={<InventoryPeriod />} />
 
           {/* Payments Routes */}
           <Route path="/payments" element={<Payments />} />

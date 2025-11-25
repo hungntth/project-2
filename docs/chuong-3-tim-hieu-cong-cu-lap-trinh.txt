@@ -1,0 +1,256 @@
+CHƯƠNG 3: TÌM HIỂU CÔNG CỤ LẬP TRÌNH
+
+Chương này trình bày về các công nghệ, framework và công cụ lập trình được sử dụng trong quá trình phát triển hệ thống quản lý bán hàng. Việc tìm hiểu và nắm vững các công nghệ này là cơ sở quan trọng để xây dựng một hệ thống hiện đại, hiệu quả và dễ bảo trì. Chương được chia thành ba phần chính: tổng quan về công nghệ, ứng dụng của công nghệ trong dự án, và các công cụ lập trình cùng với một số form của chương trình.
+
+3.1. TÌM HIỂU TỔNG QUAN VỀ CÔNG NGHỆ
+
+3.1.1. NestJS Framework
+
+NestJS là một framework tiến bộ cho Node.js được xây dựng dựa trên TypeScript, được thiết kế để xây dựng các ứng dụng server-side hiệu quả và có thể mở rộng. NestJS sử dụng kiến trúc module hóa, lấy cảm hứng từ Angular, giúp tổ chức code một cách rõ ràng và có cấu trúc.
+
+Các đặc điểm chính của NestJS:
+- Kiến trúc module: Hệ thống được tổ chức thành các module độc lập, mỗi module đảm nhận một chức năng cụ thể
+- Dependency Injection: Hỗ trợ dependency injection mạnh mẽ, giúp quản lý các dependencies một cách hiệu quả
+- Decorators: Sử dụng decorators để định nghĩa controllers, services, và các thành phần khác
+- Middleware và Guards: Hỗ trợ middleware và guards cho authentication, authorization, và xử lý request
+- Exception Filters: Xử lý exceptions một cách tập trung và nhất quán
+- Pipes: Transform và validate dữ liệu đầu vào
+- Interceptors: Thực hiện các tác vụ bổ sung như logging, caching, transformation
+
+NestJS phù hợp cho việc xây dựng các ứng dụng enterprise-scale với yêu cầu cao về tính mở rộng và bảo trì.
+
+3.1.2. TypeScript
+
+TypeScript là một superset của JavaScript được phát triển bởi Microsoft, bổ sung thêm type system và các tính năng hiện đại. TypeScript được compile sang JavaScript thuần, có thể chạy trên mọi môi trường hỗ trợ JavaScript.
+
+Các đặc điểm chính của TypeScript:
+- Type Safety: Cung cấp type checking tại compile time, giúp phát hiện lỗi sớm
+- Interfaces và Types: Định nghĩa cấu trúc dữ liệu rõ ràng
+- Classes và Inheritance: Hỗ trợ lập trình hướng đối tượng đầy đủ
+- Generics: Cho phép tạo các component có thể tái sử dụng với nhiều kiểu dữ liệu
+- Decorators: Hỗ trợ decorators cho metadata và dependency injection
+- ES6+ Features: Hỗ trợ các tính năng mới nhất của ECMAScript
+
+TypeScript giúp code dễ đọc, dễ bảo trì và ít lỗi hơn so với JavaScript thuần.
+
+3.1.3. TypeORM
+
+TypeORM là một ORM (Object-Relational Mapping) mạnh mẽ cho TypeScript và JavaScript, hỗ trợ nhiều loại database như PostgreSQL, MySQL, SQLite, MongoDB. TypeORM cho phép làm việc với database thông qua các class và objects thay vì viết SQL trực tiếp.
+
+Các đặc điểm chính của TypeORM:
+- Entity-based: Định nghĩa database tables thông qua các class entities
+- Decorators: Sử dụng decorators để định nghĩa columns, relations, indexes
+- Relations: Hỗ trợ các loại quan hệ như OneToOne, OneToMany, ManyToOne, ManyToMany
+- Query Builder: Cung cấp query builder mạnh mẽ và type-safe
+- Migrations: Hỗ trợ database migrations để quản lý schema changes
+- Active Record và Data Mapper: Hỗ trợ cả hai pattern
+- Transactions: Hỗ trợ database transactions
+
+TypeORM giúp việc làm việc với database trở nên dễ dàng và an toàn hơn.
+
+3.1.4. PostgreSQL
+
+PostgreSQL là một hệ quản trị cơ sở dữ liệu quan hệ mã nguồn mở, mạnh mẽ và đáng tin cậy. PostgreSQL được đánh giá cao về tính ổn định, hiệu suất và khả năng mở rộng.
+
+Các đặc điểm chính của PostgreSQL:
+- ACID Compliance: Đảm bảo tính toàn vẹn dữ liệu với ACID properties
+- Advanced Data Types: Hỗ trợ nhiều kiểu dữ liệu phức tạp như arrays, JSON, JSONB
+- Full-text Search: Hỗ trợ tìm kiếm văn bản đầy đủ
+- Extensibility: Cho phép mở rộng thông qua extensions
+- Performance: Hiệu suất cao với các tính năng như indexes, query optimization
+- Open Source: Mã nguồn mở và miễn phí
+
+PostgreSQL là lựa chọn phù hợp cho các ứng dụng enterprise cần độ tin cậy và hiệu suất cao.
+
+3.1.5. Các Thư Viện Hỗ Trợ
+
+Class-validator: Thư viện sử dụng decorators để validate dữ liệu đầu vào. Cho phép định nghĩa các validation rules trực tiếp trên DTOs, giúp đảm bảo tính hợp lệ của dữ liệu trước khi xử lý.
+
+Class-transformer: Thư viện chuyển đổi plain objects thành class instances và ngược lại. Hữu ích trong việc transform dữ liệu giữa các layer của ứng dụng.
+
+UUID: Thư viện tạo unique identifiers, được sử dụng để tạo primary keys cho các entities thay vì auto-increment integers.
+
+3.2. ỨNG DỤNG CỦA CÔNG NGHỆ
+
+3.2.1. Ứng dụng của NestJS trong dự án
+
+Trong dự án này, NestJS được sử dụng làm framework chính để xây dựng backend API. Kiến trúc module của NestJS phù hợp hoàn hảo với yêu cầu chia hệ thống thành 10 module chức năng độc lập.
+
+Ứng dụng cụ thể:
+- Module Architecture: Mỗi module (Categories, Products, Orders, v.v.) được tổ chức như một NestJS module độc lập, có controller, service, và entities riêng
+- Controllers: Xử lý HTTP requests, định nghĩa routes và endpoints. Mỗi controller sử dụng decorators như @Get(), @Post(), @Put(), @Delete() để định nghĩa các API endpoints
+- Services: Chứa business logic, được inject vào controllers thông qua dependency injection
+- DTOs: Sử dụng class-validator để validate dữ liệu đầu vào tại controller level
+- Exception Filters: Xử lý các lỗi một cách tập trung, trả về error responses nhất quán
+- Configuration: Sử dụng ConfigModule để quản lý environment variables và cấu hình database
+
+Lợi ích: Kiến trúc rõ ràng, dễ bảo trì, dễ test, và có thể mở rộng dễ dàng.
+
+3.2.2. Ứng dụng của TypeScript trong dự án
+
+TypeScript được sử dụng làm ngôn ngữ lập trình chính cho toàn bộ dự án, từ việc định nghĩa entities, DTOs, đến việc viết business logic.
+
+Ứng dụng cụ thể:
+- Type Safety: Tất cả các entities, DTOs, và interfaces đều được định nghĩa với types rõ ràng, giúp phát hiện lỗi tại compile time
+- Interfaces: Định nghĩa các interfaces cho DTOs, giúp đảm bảo tính nhất quán của dữ liệu
+- Generics: Sử dụng generics trong các service methods để tái sử dụng code
+- Enums: Sử dụng enums cho các trạng thái như OrderStatus, PaymentStatus, PaymentMethod, EmployeeRole
+- Type Inference: TypeScript tự động suy luận types trong nhiều trường hợp, giúp code ngắn gọn hơn
+
+Lợi ích: Giảm thiểu lỗi, code dễ đọc và dễ bảo trì hơn, IDE hỗ trợ tốt hơn với autocomplete và type checking.
+
+3.2.3. Ứng dụng của TypeORM trong dự án
+
+TypeORM được sử dụng để quản lý tất cả các tương tác với database, từ việc định nghĩa entities đến việc thực hiện các queries.
+
+Ứng dụng cụ thể:
+- Entities: Mỗi bảng trong database được định nghĩa bằng một TypeScript class với các decorators như @Entity(), @Column(), @PrimaryGeneratedColumn()
+- Relations: Định nghĩa các quan hệ giữa các entities như ManyToOne, OneToMany, OneToOne thông qua decorators
+- Repository Pattern: Sử dụng TypeORM repositories để thực hiện CRUD operations
+- Query Builder: Sử dụng query builder cho các queries phức tạp trong module Reports
+- Transactions: Sử dụng transactions trong các operations quan trọng như tạo đơn hàng và cập nhật tồn kho
+- Migrations: Sử dụng migrations để quản lý thay đổi database schema
+
+Lợi ích: Code dễ đọc, type-safe, và dễ bảo trì. Không cần viết SQL thủ công cho hầu hết các operations.
+
+3.2.4. Ứng dụng của PostgreSQL trong dự án
+
+PostgreSQL được sử dụng làm database chính để lưu trữ tất cả dữ liệu của hệ thống.
+
+Ứng dụng cụ thể:
+- Data Storage: Lưu trữ dữ liệu của tất cả các entities: categories, products, customers, orders, inventory, v.v.
+- Relations: Sử dụng foreign keys để đảm bảo tính toàn vẹn dữ liệu giữa các bảng
+- Indexes: Tạo indexes trên các cột thường được query như email, SKU, barcode để tối ưu hiệu suất
+- Constraints: Sử dụng các constraints như UNIQUE, NOT NULL để đảm bảo tính hợp lệ của dữ liệu
+- JSON Support: Có thể sử dụng JSON/JSONB cho các trường dữ liệu linh hoạt trong tương lai
+
+Lợi ích: Độ tin cậy cao, hiệu suất tốt, và hỗ trợ các tính năng nâng cao.
+
+3.3. CÔNG CỤ LẬP TRÌNH VÀ MỘT SỐ FORM CỦA CHƯƠNG TRÌNH
+
+3.3.1. Công Cụ Lập Trình
+
+Visual Studio Code (VS Code): Là editor code chính được sử dụng trong dự án. VS Code cung cấp nhiều tính năng hữu ích như IntelliSense, debugging, Git integration, và extensions cho TypeScript, NestJS.
+
+Git và GitHub: Sử dụng Git để quản lý version control và GitHub để lưu trữ code repository. Git giúp theo dõi các thay đổi, quản lý branches, và hợp tác trong nhóm.
+
+Postman: Công cụ để test các API endpoints. Postman cho phép gửi HTTP requests, kiểm tra responses, và lưu các requests để sử dụng lại. Rất hữu ích trong quá trình phát triển và testing.
+
+Node.js và npm/yarn: Node.js là runtime environment để chạy ứng dụng. npm hoặc yarn được sử dụng để quản lý dependencies và chạy các scripts.
+
+ESLint và Prettier: ESLint để kiểm tra code quality và phát hiện lỗi. Prettier để format code tự động, đảm bảo code style nhất quán trong toàn bộ dự án.
+
+Jest: Framework testing được sử dụng để viết unit tests và integration tests. Jest tích hợp tốt với TypeScript và NestJS.
+
+pgAdmin hoặc DBeaver: Công cụ để quản lý và xem dữ liệu trong PostgreSQL database. Cho phép thực hiện queries, xem cấu trúc bảng, và quản lý database.
+
+3.3.2. Cấu Trúc Dự Án
+
+Dự án được tổ chức theo cấu trúc chuẩn của NestJS:
+
+src/
+  app.module.ts          - Module chính của ứng dụng
+  main.ts                - Entry point của ứng dụng
+  config/                - Cấu hình database
+  categories/            - Module quản lý danh mục
+    categories.controller.ts
+    categories.service.ts
+    categories.module.ts
+    entities/
+    dto/
+  products/              - Module quản lý sản phẩm
+  customers/             - Module quản lý khách hàng
+  orders/                - Module quản lý đơn hàng
+  inventory/             - Module quản lý kho
+  employees/             - Module quản lý nhân viên
+  suppliers/             - Module quản lý nhà cung cấp
+  payments/              - Module quản lý thanh toán
+  promotions/            - Module quản lý khuyến mãi
+  reports/               - Module báo cáo
+
+Mỗi module có cấu trúc tương tự: controller xử lý HTTP requests, service chứa business logic, module định nghĩa dependencies, entities định nghĩa database schema, và dto định nghĩa data transfer objects.
+
+3.3.3. Một Số Form và API Endpoints Chính
+
+Form tạo đơn hàng (POST /orders):
+- Endpoint: POST /orders
+- Request Body: {
+    customerId: string,
+    items: [
+      {
+        productId: string,
+        quantity: number
+      }
+    ],
+    notes?: string
+  }
+- Response: Thông tin đơn hàng đã tạo với orderNumber, tổng tiền, trạng thái
+
+Form xem danh sách sản phẩm (GET /products):
+- Endpoint: GET /products?page=1&limit=10&categoryId=xxx
+- Query Parameters: page, limit, categoryId (optional)
+- Response: Danh sách sản phẩm với phân trang, bao gồm thông tin sản phẩm và tồn kho
+
+Form xem chi tiết đơn hàng (GET /orders/:id):
+- Endpoint: GET /orders/:id
+- Path Parameter: id (order ID)
+- Response: Thông tin đầy đủ về đơn hàng, bao gồm thông tin khách hàng, danh sách sản phẩm, tổng tiền, trạng thái
+
+Form cập nhật trạng thái đơn hàng (PATCH /orders/:id/status):
+- Endpoint: PATCH /orders/:id/status
+- Request Body: {
+    status: 'CONFIRMED' | 'PROCESSING' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED'
+  }
+- Response: Thông tin đơn hàng đã cập nhật
+
+Form nhập kho (POST /inventory/import):
+- Endpoint: POST /inventory/import
+- Request Body: {
+    productId: string,
+    quantity: number,
+    supplierId?: string,
+    reason?: string,
+    notes?: string
+  }
+- Response: Thông tin giao dịch nhập kho và tồn kho mới
+
+Form xem báo cáo doanh số (GET /reports/sales):
+- Endpoint: GET /reports/sales?startDate=2024-01-01&endDate=2024-12-31
+- Query Parameters: startDate, endDate
+- Response: Báo cáo doanh số theo khoảng thời gian, bao gồm tổng doanh thu, số đơn hàng, biểu đồ xu hướng
+
+Form tạo khuyến mãi (POST /promotions):
+- Endpoint: POST /promotions
+- Request Body: {
+    name: string,
+    description?: string,
+    type: 'PERCENTAGE' | 'FIXED_AMOUNT',
+    value: number,
+    startDate: string,
+    endDate: string,
+    productId?: string,
+    categoryId?: string,
+    minPurchaseAmount?: number
+  }
+- Response: Thông tin khuyến mãi đã tạo
+
+Form xem dashboard (GET /reports/dashboard):
+- Endpoint: GET /reports/dashboard
+- Response: Các chỉ số tổng quan như tổng doanh thu, tổng đơn hàng, tổng khách hàng, tổng sản phẩm
+
+3.3.4. Các Yếu Tố Chính Của Từng Công Cụ
+
+NestJS CLI: Công cụ command-line để tạo modules, controllers, services một cách nhanh chóng. Sử dụng lệnh như "nest generate module categories" để tạo module mới.
+
+TypeORM CLI: Công cụ để tạo migrations, chạy migrations, và quản lý database schema. Sử dụng lệnh như "typeorm migration:create" để tạo migration mới.
+
+Jest Configuration: Cấu hình Jest trong package.json để chạy tests với TypeScript, sử dụng ts-jest để transform TypeScript files.
+
+ESLint Configuration: File eslint.config.mjs chứa các rules để kiểm tra code quality, tích hợp với Prettier để đảm bảo code style nhất quán.
+
+Prettier Configuration: File .prettierrc chứa các quy tắc format code như indentation, line length, quotes.
+
+KẾT LUẬN
+
+Chương 3 đã trình bày tổng quan về các công nghệ và công cụ được sử dụng trong dự án. NestJS, TypeScript, TypeORM, và PostgreSQL tạo nên một stack công nghệ hiện đại và mạnh mẽ, phù hợp cho việc xây dựng các ứng dụng enterprise-scale. Các công cụ lập trình như VS Code, Git, Postman hỗ trợ hiệu quả trong quá trình phát triển. Việc nắm vững các công nghệ và công cụ này là nền tảng quan trọng để xây dựng một hệ thống chất lượng cao, dễ bảo trì và có thể mở rộng trong tương lai.
+
