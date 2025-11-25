@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mô hình mức đỉnh - Quản lý Danh mục</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #718096;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+        }
+
+        .diagram-container {
+            position: relative;
+            width: 100%;
+            height: 800px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            background: #f7fafc;
+            overflow: auto;
+        }
+
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .process {
+            fill: #f56565;
+            stroke: #c53030;
+            stroke-width: 2;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .process:hover {
+            fill: #e53e3e;
+            transform: scale(1.05);
+        }
+
+        .process-text {
+            fill: white;
+            font-size: 14px;
+            font-weight: bold;
+            text-anchor: middle;
+            pointer-events: none;
+        }
+
+        .external-entity {
+            fill: #48bb78;
+            stroke: #2f855a;
+            stroke-width: 2;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .external-entity:hover {
+            fill: #38a169;
+            transform: scale(1.05);
+        }
+
+        .external-entity-text {
+            fill: white;
+            font-size: 13px;
+            font-weight: bold;
+            text-anchor: middle;
+            pointer-events: none;
+        }
+
+        .data-store {
+            fill: #ed8936;
+            stroke: #c05621;
+            stroke-width: 2;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .data-store:hover {
+            fill: #dd6b20;
+            transform: scale(1.05);
+        }
+
+        .data-store-text {
+            fill: white;
+            font-size: 12px;
+            font-weight: bold;
+            text-anchor: middle;
+            pointer-events: none;
+        }
+
+        .arrow {
+            stroke: #4a5568;
+            stroke-width: 2;
+            fill: none;
+            marker-end: url(#arrowhead);
+        }
+
+        .arrow-label {
+            fill: #2d3748;
+            font-size: 11px;
+            font-weight: 500;
+            background: white;
+            padding: 2px 4px;
+        }
+
+        .legend {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f7fafc;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .legend-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+
+        .legend-item {
+            display: inline-block;
+            margin: 10px 20px;
+            vertical-align: top;
+        }
+
+        .legend-shape {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+            vertical-align: middle;
+            border-radius: 5px;
+        }
+
+        .legend-text {
+            display: inline-block;
+            vertical-align: middle;
+            color: #4a5568;
+            font-size: 14px;
+        }
+
+        .info-box {
+            margin-top: 30px;
+            padding: 20px;
+            background: #fff5f5;
+            border-left: 4px solid #f56565;
+            border-radius: 5px;
+        }
+
+        .info-box h3 {
+            color: #c53030;
+            margin-bottom: 10px;
+        }
+
+        .info-box ul {
+            margin-left: 20px;
+            color: #2d3748;
+        }
+
+        .info-box li {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>MÔ HÌNH MỨC ĐỈNH (DFD Level 0)</h1>
+        <p class="subtitle">Hệ thống Quản lý Danh mục</p>
+
+        <div class="diagram-container">
+            <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                        <polygon points="0 0, 10 3, 0 6" fill="#4a5568" />
+                    </marker>
+                </defs>
+
+                <!-- Central Process: Hệ thống Quản lý Danh mục -->
+                <rect x="450" y="300" width="300" height="200" rx="10" class="process" id="main-process"/>
+                <text x="600" y="410" class="process-text">HỆ THỐNG</text>
+                <text x="600" y="430" class="process-text">QUẢN LÝ</text>
+                <text x="600" y="450" class="process-text">DANH MỤC</text>
+
+                <!-- External Entities -->
+                <!-- Quản lý danh mục -->
+                <rect x="50" y="100" width="120" height="80" rx="5" class="external-entity"/>
+                <text x="110" y="135" class="external-entity-text">QUẢN LÝ</text>
+                <text x="110" y="155" class="external-entity-text">DANH MỤC</text>
+
+                <!-- Hệ thống Sản phẩm -->
+                <rect x="50" y="500" width="120" height="80" rx="5" class="external-entity"/>
+                <text x="110" y="535" class="external-entity-text">HỆ THỐNG</text>
+                <text x="110" y="555" class="external-entity-text">SẢN PHẨM</text>
+
+                <!-- Hệ thống Đơn hàng -->
+                <rect x="1030" y="100" width="120" height="80" rx="5" class="external-entity"/>
+                <text x="1090" y="135" class="external-entity-text">HỆ THỐNG</text>
+                <text x="1090" y="155" class="external-entity-text">ĐƠN HÀNG</text>
+
+                <!-- Báo cáo -->
+                <rect x="1030" y="500" width="120" height="80" rx="5" class="external-entity"/>
+                <text x="1090" y="535" class="external-entity-text">BÁO CÁO</text>
+
+                <!-- Data Stores -->
+                <!-- Database Danh mục -->
+                <rect x="350" y="600" width="150" height="100" rx="5" class="data-store"/>
+                <text x="425" y="640" class="data-store-text">DATABASE</text>
+                <text x="425" y="660" class="data-store-text">DANH MỤC</text>
+                <text x="425" y="680" class="data-store-text">(Categories)</text>
+
+                <!-- Database Sản phẩm -->
+                <rect x="700" y="600" width="150" height="100" rx="5" class="data-store"/>
+                <text x="775" y="640" class="data-store-text">DATABASE</text>
+                <text x="775" y="660" class="data-store-text">SẢN PHẨM</text>
+                <text x="775" y="680" class="data-store-text">(Products)</text>
+
+                <!-- Data Flows -->
+                <!-- Quản lý danh mục -> Hệ thống -->
+                <path d="M 170 140 L 450 380" class="arrow"/>
+                <text x="250" y="135" class="arrow-label">Tạo danh mục mới</text>
+                <text x="250" y="150" class="arrow-label">Cập nhật danh mục</text>
+                <text x="250" y="165" class="arrow-label">Xóa danh mục</text>
+
+                <path d="M 450 380 L 170 140" class="arrow"/>
+                <text x="250" y="105" class="arrow-label">Danh sách danh mục</text>
+                <text x="250" y="120" class="arrow-label">Chi tiết danh mục</text>
+
+                <!-- Hệ thống Sản phẩm -> Hệ thống -->
+                <path d="M 170 540 L 450 480" class="arrow"/>
+                <text x="250" y="485" class="arrow-label">Yêu cầu danh mục</text>
+                <text x="250" y="500" class="arrow-label">Kiểm tra danh mục</text>
+
+                <path d="M 450 480 L 170 540" class="arrow"/>
+                <text x="250" y="455" class="arrow-label">Thông tin danh mục</text>
+                <text x="250" y="470" class="arrow-label">Danh sách danh mục</text>
+
+                <!-- Hệ thống -> Database Danh mục -->
+                <path d="M 500 500 L 425 600" class="arrow"/>
+                <text x="450" y="545" class="arrow-label">Ghi danh mục</text>
+                <text x="450" y="560" class="arrow-label">Cập nhật danh mục</text>
+
+                <path d="M 425 600 L 500 500" class="arrow"/>
+                <text x="450" y="530" class="arrow-label">Dữ liệu danh mục</text>
+                <text x="450" y="515" class="arrow-label">Cấu trúc cây</text>
+
+                <!-- Hệ thống -> Database Sản phẩm -->
+                <path d="M 700 500 L 775 600" class="arrow"/>
+                <text x="725" y="545" class="arrow-label">Đọc sản phẩm</text>
+                <text x="725" y="560" class="arrow-label">theo danh mục</text>
+
+                <path d="M 775 600 L 700 500" class="arrow"/>
+                <text x="725" y="530" class="arrow-label">Danh sách</text>
+                <text x="725" y="515" class="arrow-label">sản phẩm</text>
+
+                <!-- Hệ thống Đơn hàng -> Hệ thống -->
+                <path d="M 1030 140 L 750 380" class="arrow"/>
+                <text x="850" y="235" class="arrow-label">Yêu cầu thông tin</text>
+                <text x="850" y="250" class="arrow-label">danh mục</text>
+
+                <path d="M 750 380 L 1030 140" class="arrow"/>
+                <text x="850" y="205" class="arrow-label">Thông tin</text>
+                <text x="850" y="220" class="arrow-label">danh mục</text>
+
+                <!-- Báo cáo -> Hệ thống -->
+                <path d="M 1030 540 L 750 480" class="arrow"/>
+                <text x="850" y="485" class="arrow-label">Yêu cầu báo cáo</text>
+                <text x="850" y="500" class="arrow-label">theo danh mục</text>
+
+                <path d="M 750 480 L 1030 540" class="arrow"/>
+                <text x="850" y="455" class="arrow-label">Báo cáo</text>
+                <text x="850" y="470" class="arrow-label">danh mục</text>
+            </svg>
+        </div>
+
+        <div class="legend">
+            <div class="legend-title">Chú giải ký hiệu:</div>
+            <div class="legend-item">
+                <div class="legend-shape" style="background: #f56565;"></div>
+                <span class="legend-text">Quy trình xử lý (Process)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-shape" style="background: #48bb78;"></div>
+                <span class="legend-text">Tác nhân bên ngoài (External Entity)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-shape" style="background: #ed8936;"></div>
+                <span class="legend-text">Kho dữ liệu (Data Store)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-shape" style="background: #4a5568; width: 60px; height: 2px; margin-top: 19px;"></div>
+                <span class="legend-text">Luồng dữ liệu (Data Flow)</span>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <h3>Mô tả các chức năng chính:</h3>
+            <ul>
+                <li><strong>Tạo danh mục:</strong> Thêm danh mục mới với tên và mô tả, có thể gán danh mục cha</li>
+                <li><strong>Xem danh sách danh mục:</strong> Hiển thị tất cả danh mục với cấu trúc cây (parent-child)</li>
+                <li><strong>Cập nhật danh mục:</strong> Chỉnh sửa thông tin danh mục (tên, mô tả, danh mục cha)</li>
+                <li><strong>Xóa danh mục:</strong> Xóa danh mục khỏi hệ thống (kiểm tra ràng buộc với sản phẩm)</li>
+                <li><strong>Xem chi tiết danh mục:</strong> Xem thông tin chi tiết và danh sách sản phẩm trong danh mục</li>
+                <li><strong>Quản lý cấu trúc đa cấp:</strong> Hỗ trợ danh mục cha-con để tổ chức sản phẩm theo nhiều cấp</li>
+                <li><strong>Tìm kiếm danh mục:</strong> Tìm kiếm danh mục theo tên hoặc lọc theo danh mục cha</li>
+                <li><strong>Tích hợp với sản phẩm:</strong> Cung cấp danh sách danh mục cho hệ thống sản phẩm</li>
+                <li><strong>Báo cáo theo danh mục:</strong> Cung cấp dữ liệu danh mục cho hệ thống báo cáo</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.process, .external-entity, .data-store').forEach(element => {
+            element.addEventListener('mouseenter', function() {
+                this.style.filter = 'drop-shadow(0 4px 8px rgba(0,0,0,0.3))';
+            });
+            element.addEventListener('mouseleave', function() {
+                this.style.filter = 'none';
+            });
+        });
+    </script>
+</body>
+</html>
+
+

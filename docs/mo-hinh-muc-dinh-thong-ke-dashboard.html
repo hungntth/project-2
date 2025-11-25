@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mô hình mức đỉnh - Thống kê Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #718096;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+        }
+
+        .diagram-container {
+            position: relative;
+            width: 100%;
+            height: 800px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            background: #f7fafc;
+            overflow: auto;
+        }
+
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .process {
+            fill: #fcb69f;
+            stroke: #d69e2e;
+            stroke-width: 2;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .process:hover {
+            fill: #f6ad55;
+            transform: scale(1.05);
+        }
+
+        .process-text {
+            fill: white;
+            font-size: 14px;
+            font-weight: bold;
+            text-anchor: middle;
+            pointer-events: none;
+        }
+
+        .external-entity {
+            fill: #48bb78;
+            stroke: #2f855a;
+            stroke-width: 2;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .external-entity:hover {
+            fill: #38a169;
+            transform: scale(1.05);
+        }
+
+        .external-entity-text {
+            fill: white;
+            font-size: 13px;
+            font-weight: bold;
+            text-anchor: middle;
+            pointer-events: none;
+        }
+
+        .data-store {
+            fill: #ed8936;
+            stroke: #c05621;
+            stroke-width: 2;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .data-store:hover {
+            fill: #dd6b20;
+            transform: scale(1.05);
+        }
+
+        .data-store-text {
+            fill: white;
+            font-size: 12px;
+            font-weight: bold;
+            text-anchor: middle;
+            pointer-events: none;
+        }
+
+        .arrow {
+            stroke: #4a5568;
+            stroke-width: 2;
+            fill: none;
+            marker-end: url(#arrowhead);
+        }
+
+        .arrow-label {
+            fill: #2d3748;
+            font-size: 11px;
+            font-weight: 500;
+            background: white;
+            padding: 2px 4px;
+        }
+
+        .legend {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f7fafc;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .legend-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+
+        .legend-item {
+            display: inline-block;
+            margin: 10px 20px;
+            vertical-align: top;
+        }
+
+        .legend-shape {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+            vertical-align: middle;
+            border-radius: 5px;
+        }
+
+        .legend-text {
+            display: inline-block;
+            vertical-align: middle;
+            color: #4a5568;
+            font-size: 14px;
+        }
+
+        .info-box {
+            margin-top: 30px;
+            padding: 20px;
+            background: #fffaf0;
+            border-left: 4px solid #fcb69f;
+            border-radius: 5px;
+        }
+
+        .info-box h3 {
+            color: #d69e2e;
+            margin-bottom: 10px;
+        }
+
+        .info-box ul {
+            margin-left: 20px;
+            color: #2d3748;
+        }
+
+        .info-box li {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>MÔ HÌNH MỨC ĐỈNH (DFD Level 0)</h1>
+        <p class="subtitle">Hệ thống Thống kê Dashboard</p>
+
+        <div class="diagram-container">
+            <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                        <polygon points="0 0, 10 3, 0 6" fill="#4a5568" />
+                    </marker>
+                </defs>
+
+                <!-- Central Process: Hệ thống Thống kê Dashboard -->
+                <rect x="450" y="300" width="300" height="200" rx="10" class="process" id="main-process"/>
+                <text x="600" y="410" class="process-text">HỆ THỐNG</text>
+                <text x="600" y="430" class="process-text">THỐNG KÊ</text>
+                <text x="600" y="450" class="process-text">DASHBOARD</text>
+
+                <!-- External Entities -->
+                <!-- Quản lý -->
+                <rect x="50" y="100" width="120" height="80" rx="5" class="external-entity"/>
+                <text x="110" y="145" class="external-entity-text">QUẢN LÝ</text>
+
+                <!-- Người dùng -->
+                <rect x="50" y="500" width="120" height="80" rx="5" class="external-entity"/>
+                <text x="110" y="535" class="external-entity-text">NGƯỜI</text>
+                <text x="110" y="555" class="external-entity-text">DÙNG</text>
+
+                <!-- Hệ thống Báo cáo -->
+                <rect x="1030" y="100" width="120" height="80" rx="5" class="external-entity"/>
+                <text x="1090" y="135" class="external-entity-text">HỆ THỐNG</text>
+                <text x="1090" y="155" class="external-entity-text">BÁO CÁO</text>
+
+                <!-- Data Stores -->
+                <!-- Database Đơn hàng -->
+                <rect x="100" y="600" width="150" height="100" rx="5" class="data-store"/>
+                <text x="175" y="640" class="data-store-text">DATABASE</text>
+                <text x="175" y="660" class="data-store-text">ĐƠN HÀNG</text>
+                <text x="175" y="680" class="data-store-text">(Orders)</text>
+
+                <!-- Database Khách hàng -->
+                <rect x="350" y="600" width="150" height="100" rx="5" class="data-store"/>
+                <text x="425" y="640" class="data-store-text">DATABASE</text>
+                <text x="425" y="660" class="data-store-text">KHÁCH HÀNG</text>
+                <text x="425" y="680" class="data-store-text">(Customers)</text>
+
+                <!-- Database Sản phẩm -->
+                <rect x="600" y="600" width="150" height="100" rx="5" class="data-store"/>
+                <text x="675" y="640" class="data-store-text">DATABASE</text>
+                <text x="675" y="660" class="data-store-text">SẢN PHẨM</text>
+                <text x="675" y="680" class="data-store-text">(Products)</text>
+
+                <!-- Database Kho hàng -->
+                <rect x="850" y="600" width="150" height="100" rx="5" class="data-store"/>
+                <text x="925" y="640" class="data-store-text">DATABASE</text>
+                <text x="925" y="660" class="data-store-text">KHO HÀNG</text>
+                <text x="925" y="680" class="data-store-text">(Inventory)</text>
+
+                <!-- Data Flows -->
+                <!-- Quản lý -> Hệ thống -->
+                <path d="M 170 140 L 450 380" class="arrow"/>
+                <text x="250" y="135" class="arrow-label">Yêu cầu dashboard</text>
+                <text x="250" y="150" class="arrow-label">Yêu cầu thống kê</text>
+
+                <path d="M 450 380 L 170 140" class="arrow"/>
+                <text x="250" y="105" class="arrow-label">Dashboard tổng quan</text>
+                <text x="250" y="120" class="arrow-label">Báo cáo thống kê</text>
+
+                <!-- Người dùng -> Hệ thống -->
+                <path d="M 170 540 L 450 480" class="arrow"/>
+                <text x="250" y="485" class="arrow-label">Xem dashboard</text>
+                <text x="250" y="500" class="arrow-label">Yêu cầu thống kê</text>
+
+                <path d="M 450 480 L 170 540" class="arrow"/>
+                <text x="250" y="455" class="arrow-label">Thông tin dashboard</text>
+                <text x="250" y="470" class="arrow-label">Biểu đồ, số liệu</text>
+
+                <!-- Hệ thống -> Database Đơn hàng -->
+                <path d="M 500 500 L 175 600" class="arrow"/>
+                <text x="300" y="545" class="arrow-label">Đọc dữ liệu</text>
+                <text x="300" y="560" class="arrow-label">đơn hàng</text>
+
+                <path d="M 175 600 L 500 500" class="arrow"/>
+                <text x="300" y="530" class="arrow-label">Tổng đơn hàng</text>
+                <text x="300" y="515" class="arrow-label">Doanh thu</text>
+
+                <!-- Hệ thống -> Database Khách hàng -->
+                <path d="M 600 500 L 425 600" class="arrow"/>
+                <text x="500" y="545" class="arrow-label">Đọc dữ liệu</text>
+                <text x="500" y="560" class="arrow-label">khách hàng</text>
+
+                <path d="M 425 600 L 600 500" class="arrow"/>
+                <text x="500" y="530" class="arrow-label">Tổng khách hàng</text>
+                <text x="500" y="515" class="arrow-label">Khách hàng mới</text>
+
+                <!-- Hệ thống -> Database Sản phẩm -->
+                <path d="M 700 500 L 675 600" class="arrow"/>
+                <text x="680" y="545" class="arrow-label">Đọc dữ liệu</text>
+                <text x="680" y="560" class="arrow-label">sản phẩm</text>
+
+                <path d="M 675 600 L 700 500" class="arrow"/>
+                <text x="680" y="530" class="arrow-label">Tổng sản phẩm</text>
+                <text x="680" y="515" class="arrow-label">Sản phẩm bán chạy</text>
+
+                <!-- Hệ thống -> Database Kho hàng -->
+                <path d="M 700 500 L 925 600" class="arrow"/>
+                <text x="800" y="545" class="arrow-label">Đọc dữ liệu</text>
+                <text x="800" y="560" class="arrow-label">tồn kho</text>
+
+                <path d="M 925 600 L 700 500" class="arrow"/>
+                <text x="800" y="530" class="arrow-label">Tồn kho tổng</text>
+                <text x="800" y="515" class="arrow-label">Cảnh báo tồn kho thấp</text>
+
+                <!-- Hệ thống Báo cáo -> Hệ thống -->
+                <path d="M 1030 140 L 750 380" class="arrow"/>
+                <text x="850" y="235" class="arrow-label">Yêu cầu báo cáo</text>
+                <text x="850" y="250" class="arrow-label">chi tiết</text>
+
+                <path d="M 750 380 L 1030 140" class="arrow"/>
+                <text x="850" y="205" class="arrow-label">Dữ liệu thống kê</text>
+                <text x="850" y="220" class="arrow-label">Báo cáo tổng hợp</text>
+            </svg>
+        </div>
+
+        <div class="legend">
+            <div class="legend-title">Chú giải ký hiệu:</div>
+            <div class="legend-item">
+                <div class="legend-shape" style="background: #fcb69f;"></div>
+                <span class="legend-text">Quy trình xử lý (Process)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-shape" style="background: #48bb78;"></div>
+                <span class="legend-text">Tác nhân bên ngoài (External Entity)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-shape" style="background: #ed8936;"></div>
+                <span class="legend-text">Kho dữ liệu (Data Store)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-shape" style="background: #4a5568; width: 60px; height: 2px; margin-top: 19px;"></div>
+                <span class="legend-text">Luồng dữ liệu (Data Flow)</span>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <h3>Mô tả các chức năng chính:</h3>
+            <ul>
+                <li><strong>Tổng quan doanh thu:</strong> Hiển thị tổng doanh thu, doanh thu theo ngày/tháng/năm</li>
+                <li><strong>Thống kê đơn hàng:</strong> Tổng số đơn hàng, đơn hàng mới, đơn hàng theo trạng thái</li>
+                <li><strong>Thống kê khách hàng:</strong> Tổng số khách hàng, khách hàng mới, khách hàng tiềm năng</li>
+                <li><strong>Thống kê sản phẩm:</strong> Tổng số sản phẩm, sản phẩm bán chạy, sản phẩm theo danh mục</li>
+                <li><strong>Thống kê kho hàng:</strong> Tổng giá trị tồn kho, cảnh báo tồn kho thấp, sản phẩm sắp hết</li>
+                <li><strong>Đơn hàng gần đây:</strong> Hiển thị các đơn hàng mới nhất với thông tin chi tiết</li>
+                <li><strong>Biểu đồ trực quan:</strong> Biểu đồ cột, đường, tròn để hiển thị dữ liệu thống kê</li>
+                <li><strong>Báo cáo theo thời gian:</strong> So sánh dữ liệu theo ngày, tuần, tháng, năm</li>
+                <li><strong>Tích hợp đa nguồn:</strong> Tổng hợp dữ liệu từ nhiều module khác nhau</li>
+                <li><strong>Xuất báo cáo:</strong> Xuất báo cáo dashboard ra file PDF, Excel</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.process, .external-entity, .data-store').forEach(element => {
+            element.addEventListener('mouseenter', function() {
+                this.style.filter = 'drop-shadow(0 4px 8px rgba(0,0,0,0.3))';
+            });
+            element.addEventListener('mouseleave', function() {
+                this.style.filter = 'none';
+            });
+        });
+    </script>
+</body>
+</html>
+
+

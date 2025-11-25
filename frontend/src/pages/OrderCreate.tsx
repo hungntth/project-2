@@ -4,7 +4,6 @@ import {
   ordersApi,
   productsApi,
   customersApi,
-  employeesApi,
   promotionsApi,
 } from '../services/api';
 import { ArrowLeft, Plus, X } from 'lucide-react';
@@ -13,14 +12,12 @@ export default function OrderCreate() {
   const navigate = useNavigate();
   const [customers, setCustomers] = useState<any[]>([]);
   const [products, setProducts] = useState<any[]>([]);
-  const [employees, setEmployees] = useState<any[]>([]);
   const [promotions, setPromotions] = useState<any[]>([]);
   const [selectedPromotion, setSelectedPromotion] = useState<string>('');
   const [promotionDiscount, setPromotionDiscount] = useState<number>(0);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     customerId: '',
-    employeeId: '',
     notes: '',
   });
   const [items, setItems] = useState<
@@ -51,7 +48,6 @@ export default function OrderCreate() {
   useEffect(() => {
     loadCustomers();
     loadProducts();
-    loadEmployees();
     loadPromotions();
   }, []);
 
@@ -73,14 +69,6 @@ export default function OrderCreate() {
     }
   };
 
-  const loadEmployees = async () => {
-    try {
-      const response = await employeesApi.getAll();
-      setEmployees(response.data);
-    } catch (error) {
-      console.error('Error loading employees:', error);
-    }
-  };
 
   const loadPromotions = async () => {
     try {
@@ -242,7 +230,6 @@ export default function OrderCreate() {
     try {
       const data = {
         customerId: formData.customerId,
-        employeeId: formData.employeeId || undefined,
         notes: formData.notes || undefined,
         items: items.map((item) => ({
           productId: item.productId,
@@ -426,24 +413,6 @@ export default function OrderCreate() {
                     <option key={customer.id} value={customer.id}>
                       {customer.name}
                       {customer.phone ? ` - ${customer.phone}` : ''}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label className="label">Nhân viên</label>
-                <select
-                  value={formData.employeeId}
-                  onChange={(e) =>
-                    setFormData({ ...formData, employeeId: e.target.value })
-                  }
-                  className="input"
-                >
-                  <option value="">Không chọn</option>
-                  {employees.map((employee) => (
-                    <option key={employee.id} value={employee.id}>
-                      {employee.name}
                     </option>
                   ))}
                 </select>

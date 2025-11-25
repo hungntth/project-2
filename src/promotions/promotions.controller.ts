@@ -52,8 +52,8 @@ export class PromotionsController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    this.promotionsService.remove(id);
+  async remove(@Param('id') id: string) {
+    await this.promotionsService.remove(id);
     return { message: 'Promotion deleted successfully' };
   }
 }

@@ -20,17 +20,17 @@ export class Product {
   @Column({ nullable: true, type: 'text' })
   description?: string;
 
-  @Column()
-  categoryId: string;
+  @Column({ nullable: true })
+  categoryId?: string;
 
   @ManyToOne(() => Category)
   @JoinColumn({ name: 'categoryId' })
   category?: Category;
 
-  @Column('decimal', { precision: 10, scale: 2 })
-  price: number;
+  @Column('decimal', { precision: 10, scale: 2, nullable: true, default: 0 })
+  price?: number;
 
-  @Column('decimal', { precision: 10, scale: 2, nullable: true })
+  @Column('decimal', { precision: 10, scale: 2, nullable: true, default: 0 })
   costPrice?: number;
 
   @Column({ nullable: true, unique: true })

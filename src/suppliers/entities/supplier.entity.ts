@@ -4,7 +4,9 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
+import { InventoryTransaction } from '../../inventory/entities/inventory.entity';
 
 @Entity('suppliers')
 export class Supplier {
@@ -31,6 +33,9 @@ export class Supplier {
 
   @Column({ nullable: true })
   country?: string;
+
+  @OneToMany(() => InventoryTransaction, (transaction) => transaction.supplier)
+  inventoryTransactions?: InventoryTransaction[];
 
   @CreateDateColumn()
   createdAt: Date;

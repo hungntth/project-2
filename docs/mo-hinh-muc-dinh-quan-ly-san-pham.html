@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mô hình mức đỉnh - Quản lý Sản phẩm</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #718096;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+        }
+
+        .diagram-container {
+            position: relative;
+            width: 100%;
+            height: 800px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            background: #f7fafc;
+            overflow: auto;
+        }
+
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Styling cho các hình dạng */
+        .process {
+            fill: #4299e1;
+            stroke: #2b6cb0;
+            stroke-width: 2;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .process:hover {
+            fill: #3182ce;
+            transform: scale(1.05);
+        }
+
+        .process-text {
+            fill: white;
+            font-size: 14px;
+            font-weight: bold;
+            text-anchor: middle;
+            pointer-events: none;
+        }
+
+        .external-entity {
+            fill: #48bb78;
+            stroke: #2f855a;
+            stroke-width: 2;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .external-entity:hover {
+            fill: #38a169;
+            transform: scale(1.05);
+        }
+
+        .external-entity-text {
+            fill: white;
+            font-size: 13px;
+            font-weight: bold;
+            text-anchor: middle;
+            pointer-events: none;
+        }
+
+        .data-store {
+            fill: #ed8936;
+            stroke: #c05621;
+            stroke-width: 2;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .data-store:hover {
+            fill: #dd6b20;
+            transform: scale(1.05);
+        }
+
+        .data-store-text {
+            fill: white;
+            font-size: 12px;
+            font-weight: bold;
+            text-anchor: middle;
+            pointer-events: none;
+        }
+
+        .arrow {
+            stroke: #4a5568;
+            stroke-width: 2;
+            fill: none;
+            marker-end: url(#arrowhead);
+        }
+
+        .arrow-label {
+            fill: #2d3748;
+            font-size: 11px;
+            font-weight: 500;
+            background: white;
+            padding: 2px 4px;
+        }
+
+        .legend {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f7fafc;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .legend-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+
+        .legend-item {
+            display: inline-block;
+            margin: 10px 20px;
+            vertical-align: top;
+        }
+
+        .legend-shape {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+            vertical-align: middle;
+            border-radius: 5px;
+        }
+
+        .legend-text {
+            display: inline-block;
+            vertical-align: middle;
+            color: #4a5568;
+            font-size: 14px;
+        }
+
+        .info-box {
+            margin-top: 30px;
+            padding: 20px;
+            background: #ebf8ff;
+            border-left: 4px solid #4299e1;
+            border-radius: 5px;
+        }
+
+        .info-box h3 {
+            color: #2c5282;
+            margin-bottom: 10px;
+        }
+
+        .info-box ul {
+            margin-left: 20px;
+            color: #2d3748;
+        }
+
+        .info-box li {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>MÔ HÌNH MỨC ĐỈNH (DFD Level 0)</h1>
+        <p class="subtitle">Hệ thống Quản lý Sản phẩm</p>
+
+        <div class="diagram-container">
+            <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+                <!-- Arrow marker definition -->
+                <defs>
+                    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                        <polygon points="0 0, 10 3, 0 6" fill="#4a5568" />
+                    </marker>
+                </defs>
+
+                <!-- Central Process: Hệ thống Quản lý Sản phẩm -->
+                <rect x="450" y="300" width="300" height="200" rx="10" class="process" id="main-process"/>
+                <text x="600" y="410" class="process-text">HỆ THỐNG</text>
+                <text x="600" y="430" class="process-text">QUẢN LÝ</text>
+                <text x="600" y="450" class="process-text">SẢN PHẨM</text>
+
+                <!-- External Entities -->
+                <!-- Quản lý sản phẩm -->
+                <rect x="50" y="100" width="120" height="80" rx="5" class="external-entity"/>
+                <text x="110" y="135" class="external-entity-text">QUẢN LÝ</text>
+                <text x="110" y="155" class="external-entity-text">SẢN PHẨM</text>
+
+                <!-- Nhân viên kho -->
+                <rect x="50" y="250" width="120" height="80" rx="5" class="external-entity"/>
+                <text x="110" y="285" class="external-entity-text">NHÂN VIÊN</text>
+                <text x="110" y="305" class="external-entity-text">KHO</text>
+
+                <!-- Hệ thống Đơn hàng -->
+                <rect x="50" y="500" width="120" height="80" rx="5" class="external-entity"/>
+                <text x="110" y="535" class="external-entity-text">HỆ THỐNG</text>
+                <text x="110" y="555" class="external-entity-text">ĐƠN HÀNG</text>
+
+                <!-- Hệ thống Upload -->
+                <rect x="1030" y="100" width="120" height="80" rx="5" class="external-entity"/>
+                <text x="1090" y="135" class="external-entity-text">HỆ THỐNG</text>
+                <text x="1090" y="155" class="external-entity-text">UPLOAD</text>
+
+                <!-- Hệ thống Kho hàng -->
+                <rect x="1030" y="250" width="120" height="80" rx="5" class="external-entity"/>
+                <text x="1090" y="285" class="external-entity-text">HỆ THỐNG</text>
+                <text x="1090" y="305" class="external-entity-text">KHO HÀNG</text>
+
+                <!-- Data Stores -->
+                <!-- Database Sản phẩm -->
+                <rect x="200" y="600" width="150" height="100" rx="5" class="data-store"/>
+                <text x="275" y="640" class="data-store-text">DATABASE</text>
+                <text x="275" y="660" class="data-store-text">SẢN PHẨM</text>
+                <text x="275" y="680" class="data-store-text">(Products)</text>
+
+                <!-- Database Danh mục -->
+                <rect x="500" y="600" width="150" height="100" rx="5" class="data-store"/>
+                <text x="575" y="640" class="data-store-text">DATABASE</text>
+                <text x="575" y="660" class="data-store-text">DANH MỤC</text>
+                <text x="575" y="680" class="data-store-text">(Categories)</text>
+
+                <!-- Database Kho hàng -->
+                <rect x="850" y="600" width="150" height="100" rx="5" class="data-store"/>
+                <text x="925" y="640" class="data-store-text">DATABASE</text>
+                <text x="925" y="660" class="data-store-text">KHO HÀNG</text>
+                <text x="925" y="680" class="data-store-text">(Inventory)</text>
+
+                <!-- Data Flows -->
+                <!-- Quản lý sản phẩm -> Hệ thống -->
+                <path d="M 170 140 L 450 380" class="arrow"/>
+                <text x="250" y="135" class="arrow-label">Tạo sản phẩm mới</text>
+                <text x="250" y="150" class="arrow-label">Cập nhật sản phẩm</text>
+                <text x="250" y="165" class="arrow-label">Xóa sản phẩm</text>
+
+                <path d="M 450 380 L 170 140" class="arrow"/>
+                <text x="250" y="105" class="arrow-label">Danh sách sản phẩm</text>
+                <text x="250" y="120" class="arrow-label">Chi tiết sản phẩm</text>
+
+                <!-- Nhân viên kho -> Hệ thống -->
+                <path d="M 170 290 L 450 400" class="arrow"/>
+                <text x="250" y="390" class="arrow-label">Tìm kiếm sản phẩm</text>
+                <text x="250" y="405" class="arrow-label">Xem thông tin sản phẩm</text>
+
+                <path d="M 450 400 L 170 290" class="arrow"/>
+                <text x="250" y="360" class="arrow-label">Thông tin sản phẩm</text>
+                <text x="250" y="375" class="arrow-label">Kết quả tìm kiếm</text>
+
+                <!-- Hệ thống Đơn hàng -> Hệ thống -->
+                <path d="M 170 540 L 450 480" class="arrow"/>
+                <text x="250" y="485" class="arrow-label">Yêu cầu thông tin</text>
+                <text x="250" y="500" class="arrow-label">sản phẩm, giá</text>
+
+                <path d="M 450 480 L 170 540" class="arrow"/>
+                <text x="250" y="455" class="arrow-label">Thông tin sản phẩm</text>
+                <text x="250" y="470" class="arrow-label">Giá bán, tồn kho</text>
+
+                <!-- Hệ thống -> Database Sản phẩm -->
+                <path d="M 500 500 L 275 600" class="arrow"/>
+                <text x="350" y="545" class="arrow-label">Ghi sản phẩm</text>
+                <text x="350" y="560" class="arrow-label">Cập nhật thông tin</text>
+
+                <path d="M 275 600 L 500 500" class="arrow"/>
+                <text x="350" y="530" class="arrow-label">Dữ liệu sản phẩm</text>
+                <text x="350" y="515" class="arrow-label">Danh sách sản phẩm</text>
+
+                <!-- Hệ thống -> Database Danh mục -->
+                <path d="M 600 500 L 575 600" class="arrow"/>
+                <text x="580" y="545" class="arrow-label">Đọc danh mục</text>
+
+                <path d="M 575 600 L 600 500" class="arrow"/>
+                <text x="580" y="530" class="arrow-label">Thông tin</text>
+                <text x="580" y="515" class="arrow-label">danh mục</text>
+
+                <!-- Hệ thống -> Database Kho hàng -->
+                <path d="M 700 500 L 925 600" class="arrow"/>
+                <text x="800" y="545" class="arrow-label">Đọc tồn kho</text>
+
+                <path d="M 925 600 L 700 500" class="arrow"/>
+                <text x="800" y="530" class="arrow-label">Thông tin</text>
+                <text x="800" y="515" class="arrow-label">tồn kho</text>
+
+                <!-- Hệ thống Upload -> Hệ thống -->
+                <path d="M 1030 140 L 750 380" class="arrow"/>
+                <text x="850" y="235" class="arrow-label">Upload hình ảnh</text>
+
+                <path d="M 750 380 L 1030 140" class="arrow"/>
+                <text x="850" y="205" class="arrow-label">URL hình ảnh</text>
+                <text x="850" y="220" class="arrow-label">Xác nhận upload</text>
+
+                <!-- Hệ thống Kho hàng -> Hệ thống -->
+                <path d="M 1030 290 L 750 400" class="arrow"/>
+                <text x="850" y="340" class="arrow-label">Yêu cầu thông tin</text>
+                <text x="850" y="355" class="arrow-label">tồn kho sản phẩm</text>
+
+                <path d="M 750 400 L 1030 290" class="arrow"/>
+                <text x="850" y="310" class="arrow-label">Thông tin tồn kho</text>
+                <text x="850" y="325" class="arrow-label">Số lượng có sẵn</text>
+            </svg>
+        </div>
+
+        <div class="legend">
+            <div class="legend-title">Chú giải ký hiệu:</div>
+            <div class="legend-item">
+                <div class="legend-shape" style="background: #4299e1;"></div>
+                <span class="legend-text">Quy trình xử lý (Process)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-shape" style="background: #48bb78;"></div>
+                <span class="legend-text">Tác nhân bên ngoài (External Entity)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-shape" style="background: #ed8936;"></div>
+                <span class="legend-text">Kho dữ liệu (Data Store)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-shape" style="background: #4a5568; width: 60px; height: 2px; margin-top: 19px;"></div>
+                <span class="legend-text">Luồng dữ liệu (Data Flow)</span>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <h3>Mô tả các chức năng chính:</h3>
+            <ul>
+                <li><strong>Tạo sản phẩm:</strong> Thêm sản phẩm mới với thông tin cơ bản (tên, mô tả, giá, SKU, barcode)</li>
+                <li><strong>Xem danh sách sản phẩm:</strong> Hiển thị danh sách sản phẩm với phân trang và tìm kiếm</li>
+                <li><strong>Xem chi tiết sản phẩm:</strong> Xem thông tin chi tiết của một sản phẩm cụ thể</li>
+                <li><strong>Cập nhật sản phẩm:</strong> Chỉnh sửa thông tin sản phẩm (tên, mô tả, giá, danh mục, hình ảnh)</li>
+                <li><strong>Xóa sản phẩm:</strong> Xóa sản phẩm khỏi hệ thống</li>
+                <li><strong>Tìm kiếm và lọc:</strong> Tìm kiếm theo tên, SKU, barcode; lọc theo danh mục, khoảng giá</li>
+                <li><strong>Quản lý hình ảnh:</strong> Upload và quản lý nhiều hình ảnh cho mỗi sản phẩm</li>
+                <li><strong>Phân loại sản phẩm:</strong> Gán sản phẩm vào danh mục để dễ quản lý</li>
+                <li><strong>Xem tồn kho:</strong> Xem số lượng tồn kho hiện tại của sản phẩm</li>
+                <li><strong>Tích hợp với đơn hàng:</strong> Cung cấp thông tin sản phẩm và giá cho hệ thống đơn hàng</li>
+                <li><strong>Quản lý giá:</strong> Theo dõi giá bán và giá vốn của sản phẩm</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Thêm hiệu ứng tương tác
+        document.querySelectorAll('.process, .external-entity, .data-store').forEach(element => {
+            element.addEventListener('mouseenter', function() {
+                this.style.filter = 'drop-shadow(0 4px 8px rgba(0,0,0,0.3))';
+            });
+            element.addEventListener('mouseleave', function() {
+                this.style.filter = 'none';
+            });
+        });
+    </script>
+</body>
+</html>
+
+

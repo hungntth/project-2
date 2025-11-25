@@ -6,12 +6,9 @@ import {
   ShoppingCart,
   Users,
   FolderTree,
-  UserCircle,
   Warehouse,
-  CreditCard,
   Tag,
   Truck,
-  BarChart3,
 } from 'lucide-react';
 
 interface LayoutProps {
@@ -24,12 +21,9 @@ const menuItems = [
   { path: '/orders', label: 'Đơn hàng', icon: ShoppingCart },
   { path: '/customers', label: 'Khách hàng', icon: Users },
   { path: '/categories', label: 'Danh mục', icon: FolderTree },
-  { path: '/employees', label: 'Nhân viên', icon: UserCircle },
   { path: '/inventory', label: 'Kho hàng', icon: Warehouse },
-  { path: '/payments', label: 'Thanh toán', icon: CreditCard },
   { path: '/promotions', label: 'Khuyến mãi', icon: Tag },
   { path: '/suppliers', label: 'Nhà cung cấp', icon: Truck },
-  { path: '/reports', label: 'Báo cáo', icon: BarChart3 },
 ];
 
 export default function Layout({ children }: LayoutProps) {

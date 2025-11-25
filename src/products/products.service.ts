@@ -59,7 +59,7 @@ export class ProductsService {
       relations: ['category'],
     });
     if (!product) {
-      throw new NotFoundException(`Product with ID ${id} not found`);
+      throw new NotFoundException(`Không tìm thấy sản phẩm với ID ${id}`);
     }
     return product;
   }

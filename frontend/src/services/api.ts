@@ -55,16 +55,6 @@ export const ordersApi = {
   delete: (id: string) => api.delete(`/orders/${id}`),
 };
 
-// Employees API
-export const employeesApi = {
-  getAll: () => api.get('/employees'),
-  getById: (id: string) => api.get(`/employees/${id}`),
-  getSalesStatistics: (id: string) => api.get(`/employees/${id}/sales`),
-  create: (data: any) => api.post('/employees', data),
-  update: (id: string, data: any) => api.patch(`/employees/${id}`, data),
-  delete: (id: string) => api.delete(`/employees/${id}`),
-};
-
 // Inventory API
 export const inventoryApi = {
   getAll: () => api.get('/inventory'),
@@ -115,16 +105,17 @@ export const suppliersApi = {
   delete: (id: string) => api.delete(`/suppliers/${id}`),
 };
 
-// Reports API
-export const reportsApi = {
-  getDashboard: () => api.get('/reports/dashboard'),
-  getSalesReport: (params?: any) => api.get('/reports/sales', { params }),
-  getProductsReport: (params?: any) => api.get('/reports/products', { params }),
-  getCustomersReport: (params?: any) =>
-    api.get('/reports/customers', { params }),
-  getInventoryReport: () => api.get('/reports/inventory'),
-  getRevenueReport: (params?: any) => api.get('/reports/revenue', { params }),
-  getProfitReport: (params?: any) => api.get('/reports/profit', { params }),
+// Upload API
+export const uploadApi = {
+  uploadImage: (file: File) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    return api.post('/upload/image', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  },
 };
 
 export default api;

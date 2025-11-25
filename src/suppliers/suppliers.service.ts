@@ -24,7 +24,7 @@ export class SuppliersService {
   async findOne(id: string): Promise<Supplier> {
     const supplier = await this.supplierRepository.findOne({ where: { id } });
     if (!supplier) {
-      throw new NotFoundException(`Supplier with ID ${id} not found`);
+      throw new NotFoundException(`Không tìm thấy nhà cung cấp với ID ${id}`);
     }
     return supplier;
   }

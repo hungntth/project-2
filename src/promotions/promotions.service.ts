@@ -21,7 +21,7 @@ export class PromotionsService {
     const endDate = new Date(createPromotionDto.endDate);
 
     if (endDate <= startDate) {
-      throw new BadRequestException('End date must be after start date');
+      throw new BadRequestException('Ngày kết thúc phải sau ngày bắt đầu');
     }
 
     const promotion = this.promotionRepository.create({
@@ -45,7 +45,7 @@ export class PromotionsService {
       relations: ['product', 'category'],
     });
     if (!promotion) {
-      throw new NotFoundException(`Promotion with ID ${id} not found`);
+      throw new NotFoundException(`Không tìm thấy khuyến mãi với ID ${id}`);
     }
     return promotion;
   }
@@ -93,7 +93,7 @@ export class PromotionsService {
   async applyPromotion(promotionId: string, orderAmount: number): Promise<any> {
     const promotion = await this.findOne(promotionId);
     if (!promotion.isActive) {
-      throw new BadRequestException('Promotion is not active');
+      throw new BadRequestException('Khuyến mãi không còn hiệu lực');
     }
 
     if (
@@ -101,7 +101,7 @@ export class PromotionsService {
       orderAmount < promotion.minPurchaseAmount
     ) {
       throw new BadRequestException(
-        'Order amount does not meet minimum requirement',
+        `Giá trị đơn hàng không đạt yêu cầu tối thiểu (${promotion.minPurchaseAmount})`,
       );
     }
 

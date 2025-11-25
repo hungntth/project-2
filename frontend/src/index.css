@@ -47,7 +47,7 @@
   }
   
   .table-modern {
-    @apply w-full;
+    @apply w-full border-collapse;
   }
   
   .table-modern thead {
@@ -55,11 +55,11 @@
   }
   
   .table-modern th {
-    @apply px-4 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider;
+    @apply px-4 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider align-middle;
   }
   
   .table-modern td {
-    @apply px-4 py-3 text-sm text-gray-800;
+    @apply px-4 py-3 text-sm text-gray-800 align-middle;
   }
   
   .table-modern tbody tr {
@@ -84,6 +84,30 @@
   
   .badge-info {
     @apply badge bg-blue-100 text-blue-800;
+  }
+
+  .tooltip-wrapper {
+    @apply relative inline-block;
+  }
+
+  .tooltip-wrapper:hover .tooltip {
+    @apply visible opacity-100;
+  }
+
+  .tooltip {
+    @apply invisible opacity-0 absolute z-50 px-3 py-2 text-sm text-white bg-gray-900 rounded-lg shadow-lg whitespace-normal max-w-xs;
+    @apply transition-all duration-200;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 8px;
+  }
+
+  .tooltip::after {
+    content: '';
+    @apply absolute top-full left-1/2 transform -translate-x-1/2;
+    border: 6px solid transparent;
+    border-top-color: #111827;
   }
 }
 

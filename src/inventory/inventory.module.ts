@@ -4,6 +4,7 @@ import { InventoryService } from './inventory.service';
 import { InventoryController } from './inventory.controller';
 import { Inventory, InventoryTransaction } from './entities/inventory.entity';
 import { InventoryPeriod } from './entities/inventory-period.entity';
+import { Product } from '../products/entities/product.entity';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { InventoryPeriod } from './entities/inventory-period.entity';
       Inventory,
       InventoryTransaction,
       InventoryPeriod,
+      Product,
     ]),
   ],
   controllers: [InventoryController],

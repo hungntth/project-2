@@ -41,8 +41,4 @@ export class CreateOrderDto {
   @IsString()
   @IsOptional()
   notes?: string;
-
-  @IsString()
-  @IsOptional()
-  employeeId?: string;
 }

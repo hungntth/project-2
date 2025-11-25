@@ -8,11 +8,10 @@ import { ProductsModule } from './products/products.module';
 import { CustomersModule } from './customers/customers.module';
 import { OrdersModule } from './orders/orders.module';
 import { InventoryModule } from './inventory/inventory.module';
-import { EmployeesModule } from './employees/employees.module';
 import { SuppliersModule } from './suppliers/suppliers.module';
 import { PaymentsModule } from './payments/payments.module';
 import { PromotionsModule } from './promotions/promotions.module';
-import { ReportsModule } from './reports/reports.module';
+import { UploadModule } from './upload/upload.module';
 import databaseConfig from './config/database.config';
 
 @Module({
@@ -41,11 +40,10 @@ import databaseConfig from './config/database.config';
     CustomersModule,
     OrdersModule,
     InventoryModule,
-    EmployeesModule,
     SuppliersModule,
     PaymentsModule,
     PromotionsModule,
-    ReportsModule,
+    UploadModule,
   ],
   controllers: [AppController],
   providers: [AppService],

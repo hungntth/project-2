@@ -8,6 +8,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { Product } from '../../products/entities/product.entity';
+import { Supplier } from '../../suppliers/entities/supplier.entity';
 
 export enum InventoryTransactionType {
   IMPORT = 'IMPORT',
@@ -44,6 +45,10 @@ export class InventoryTransaction {
 
   @Column({ nullable: true })
   supplierId?: string;
+
+  @ManyToOne(() => Supplier, { nullable: true })
+  @JoinColumn({ name: 'supplierId' })
+  supplier?: Supplier;
 
   @Column({ nullable: true })
   orderId?: string;

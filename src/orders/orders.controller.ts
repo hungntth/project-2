@@ -59,8 +59,8 @@ export class OrdersController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    this.ordersService.remove(id);
+  async remove(@Param('id') id: string) {
+    await this.ordersService.remove(id);
     return { message: 'Order cancelled successfully' };
   }
 }

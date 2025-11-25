@@ -3,12 +3,16 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 import { AppModule } from './app.module';
+import { AllExceptionsFilter } from './common/filters/http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   // Enable CORS
   app.enableCors();
+
+  // Enable global exception filter to prevent app crashes
+  app.useGlobalFilters(new AllExceptionsFilter());
 
   // Enable validation globally
   app.useGlobalPipes(
@@ -26,6 +30,12 @@ async function bootstrap() {
   const publicPath = join(__dirname, '..', 'public');
   app.useStaticAssets(publicPath, {
     index: false,
+  });
+
+  // Serve uploaded images
+  const uploadsPath = join(__dirname, '..', 'uploads');
+  app.useStaticAssets(uploadsPath, {
+    prefix: '/uploads',
   });
 
   // Serve index.html for all non-API routes (SPA routing)

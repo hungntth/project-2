@@ -34,7 +34,7 @@ export class PaymentsService {
       relations: ['order'],
     });
     if (!payment) {
-      throw new NotFoundException(`Payment with ID ${id} not found`);
+      throw new NotFoundException(`Không tìm thấy thanh toán với ID ${id}`);
     }
     return payment;
   }

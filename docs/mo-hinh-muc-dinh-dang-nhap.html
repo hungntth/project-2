@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mô hình mức đỉnh - Đăng nhập</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #718096;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+        }
+
+        .diagram-container {
+            position: relative;
+            width: 100%;
+            height: 800px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            background: #f7fafc;
+            overflow: auto;
+        }
+
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .process {
+            fill: #667eea;
+            stroke: #553c9a;
+            stroke-width: 2;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .process:hover {
+            fill: #553c9a;
+            transform: scale(1.05);
+        }
+
+        .process-text {
+            fill: white;
+            font-size: 14px;
+            font-weight: bold;
+            text-anchor: middle;
+            pointer-events: none;
+        }
+
+        .external-entity {
+            fill: #48bb78;
+            stroke: #2f855a;
+            stroke-width: 2;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .external-entity:hover {
+            fill: #38a169;
+            transform: scale(1.05);
+        }
+
+        .external-entity-text {
+            fill: white;
+            font-size: 13px;
+            font-weight: bold;
+            text-anchor: middle;
+            pointer-events: none;
+        }
+
+        .data-store {
+            fill: #ed8936;
+            stroke: #c05621;
+            stroke-width: 2;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .data-store:hover {
+            fill: #dd6b20;
+            transform: scale(1.05);
+        }
+
+        .data-store-text {
+            fill: white;
+            font-size: 12px;
+            font-weight: bold;
+            text-anchor: middle;
+            pointer-events: none;
+        }
+
+        .arrow {
+            stroke: #4a5568;
+            stroke-width: 2;
+            fill: none;
+            marker-end: url(#arrowhead);
+        }
+
+        .arrow-label {
+            fill: #2d3748;
+            font-size: 11px;
+            font-weight: 500;
+            background: white;
+            padding: 2px 4px;
+        }
+
+        .legend {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f7fafc;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .legend-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+
+        .legend-item {
+            display: inline-block;
+            margin: 10px 20px;
+            vertical-align: top;
+        }
+
+        .legend-shape {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+            vertical-align: middle;
+            border-radius: 5px;
+        }
+
+        .legend-text {
+            display: inline-block;
+            vertical-align: middle;
+            color: #4a5568;
+            font-size: 14px;
+        }
+
+        .info-box {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f0f4ff;
+            border-left: 4px solid #667eea;
+            border-radius: 5px;
+        }
+
+        .info-box h3 {
+            color: #553c9a;
+            margin-bottom: 10px;
+        }
+
+        .info-box ul {
+            margin-left: 20px;
+            color: #2d3748;
+        }
+
+        .info-box li {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>MÔ HÌNH MỨC ĐỈNH (DFD Level 0)</h1>
+        <p class="subtitle">Hệ thống Đăng nhập và Xác thực</p>
+
+        <div class="diagram-container">
+            <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                        <polygon points="0 0, 10 3, 0 6" fill="#4a5568" />
+                    </marker>
+                </defs>
+
+                <!-- Central Process: Hệ thống Đăng nhập -->
+                <rect x="450" y="300" width="300" height="200" rx="10" class="process" id="main-process"/>
+                <text x="600" y="410" class="process-text">HỆ THỐNG</text>
+                <text x="600" y="430" class="process-text">ĐĂNG NHẬP</text>
+                <text x="600" y="450" class="process-text">XÁC THỰC</text>
+
+                <!-- External Entities -->
+                <!-- Người dùng -->
+                <rect x="50" y="100" width="120" height="80" rx="5" class="external-entity"/>
+                <text x="110" y="145" class="external-entity-text">NGƯỜI</text>
+                <text x="110" y="165" class="external-entity-text">DÙNG</text>
+
+                <!-- Quản trị viên -->
+                <rect x="50" y="500" width="120" height="80" rx="5" class="external-entity"/>
+                <text x="110" y="535" class="external-entity-text">QUẢN TRỊ</text>
+                <text x="110" y="555" class="external-entity-text">VIÊN</text>
+
+                <!-- Hệ thống chính -->
+                <rect x="1030" y="100" width="120" height="80" rx="5" class="external-entity"/>
+                <text x="1090" y="135" class="external-entity-text">HỆ THỐNG</text>
+                <text x="1090" y="155" class="external-entity-text">CHÍNH</text>
+
+                <!-- Hệ thống Log -->
+                <rect x="1030" y="500" width="120" height="80" rx="5" class="external-entity"/>
+                <text x="1090" y="535" class="external-entity-text">HỆ THỐNG</text>
+                <text x="1090" y="555" class="external-entity-text">LOG</text>
+
+                <!-- Data Stores -->
+                <!-- Database Người dùng -->
+                <rect x="200" y="600" width="150" height="100" rx="5" class="data-store"/>
+                <text x="275" y="640" class="data-store-text">DATABASE</text>
+                <text x="275" y="660" class="data-store-text">NGƯỜI DÙNG</text>
+                <text x="275" y="680" class="data-store-text">(Users)</text>
+
+                <!-- Database Session -->
+                <rect x="500" y="600" width="150" height="100" rx="5" class="data-store"/>
+                <text x="575" y="640" class="data-store-text">DATABASE</text>
+                <text x="575" y="660" class="data-store-text">SESSION</text>
+                <text x="575" y="680" class="data-store-text">(Sessions)</text>
+
+                <!-- Database Log -->
+                <rect x="850" y="600" width="150" height="100" rx="5" class="data-store"/>
+                <text x="925" y="640" class="data-store-text">DATABASE</text>
+                <text x="925" y="660" class="data-store-text">LOG</text>
+                <text x="925" y="680" class="data-store-text">(Logs)</text>
+
+                <!-- Data Flows -->
+                <!-- Người dùng -> Hệ thống -->
+                <path d="M 170 140 L 450 380" class="arrow"/>
+                <text x="250" y="135" class="arrow-label">Thông tin đăng nhập</text>
+                <text x="250" y="150" class="arrow-label">(username, password)</text>
+
+                <path d="M 450 380 L 170 140" class="arrow"/>
+                <text x="250" y="105" class="arrow-label">Xác nhận đăng nhập</text>
+                <text x="250" y="120" class="arrow-label">Token/Session</text>
+
+                <!-- Quản trị viên -> Hệ thống -->
+                <path d="M 170 540 L 450 480" class="arrow"/>
+                <text x="250" y="485" class="arrow-label">Quản lý người dùng</text>
+                <text x="250" y="500" class="arrow-label">Phân quyền</text>
+
+                <path d="M 450 480 L 170 540" class="arrow"/>
+                <text x="250" y="455" class="arrow-label">Danh sách người dùng</text>
+                <text x="250" y="470" class="arrow-label">Thông tin phân quyền</text>
+
+                <!-- Hệ thống -> Database Người dùng -->
+                <path d="M 500 500 L 275 600" class="arrow"/>
+                <text x="350" y="545" class="arrow-label">Xác thực thông tin</text>
+                <text x="350" y="560" class="arrow-label">Đọc thông tin người dùng</text>
+
+                <path d="M 275 600 L 500 500" class="arrow"/>
+                <text x="350" y="530" class="arrow-label">Thông tin người dùng</text>
+                <text x="350" y="515" class="arrow-label">Mật khẩu (hash)</text>
+
+                <!-- Hệ thống -> Database Session -->
+                <path d="M 600 500 L 575 600" class="arrow"/>
+                <text x="580" y="545" class="arrow-label">Tạo session</text>
+                <text x="580" y="560" class="arrow-label">Lưu token</text>
+
+                <path d="M 575 600 L 600 500" class="arrow"/>
+                <text x="580" y="530" class="arrow-label">Thông tin session</text>
+                <text x="580" y="515" class="arrow-label">Token hợp lệ</text>
+
+                <!-- Hệ thống -> Database Log -->
+                <path d="M 700 500 L 925 600" class="arrow"/>
+                <text x="800" y="545" class="arrow-label">Ghi log đăng nhập</text>
+                <text x="800" y="560" class="arrow-label">Ghi log đăng xuất</text>
+
+                <path d="M 925 600 L 700 500" class="arrow"/>
+                <text x="800" y="530" class="arrow-label">Lịch sử đăng nhập</text>
+                <text x="800" y="515" class="arrow-label">Thống kê truy cập</text>
+
+                <!-- Hệ thống chính -> Hệ thống -->
+                <path d="M 1030 140 L 750 380" class="arrow"/>
+                <text x="850" y="235" class="arrow-label">Yêu cầu xác thực</text>
+                <text x="850" y="250" class="arrow-label">Kiểm tra token</text>
+
+                <path d="M 750 380 L 1030 140" class="arrow"/>
+                <text x="850" y="205" class="arrow-label">Kết quả xác thực</text>
+                <text x="850" y="220" class="arrow-label">Thông tin người dùng</text>
+
+                <!-- Hệ thống Log -> Hệ thống -->
+                <path d="M 1030 540 L 750 480" class="arrow"/>
+                <text x="850" y="485" class="arrow-label">Yêu cầu log</text>
+                <text x="850" y="500" class="arrow-label">Thống kê truy cập</text>
+
+                <path d="M 750 480 L 1030 540" class="arrow"/>
+                <text x="850" y="455" class="arrow-label">Dữ liệu log</text>
+                <text x="850" y="470" class="arrow-label">Báo cáo truy cập</text>
+            </svg>
+        </div>
+
+        <div class="legend">
+            <div class="legend-title">Chú giải ký hiệu:</div>
+            <div class="legend-item">
+                <div class="legend-shape" style="background: #667eea;"></div>
+                <span class="legend-text">Quy trình xử lý (Process)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-shape" style="background: #48bb78;"></div>
+                <span class="legend-text">Tác nhân bên ngoài (External Entity)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-shape" style="background: #ed8936;"></div>
+                <span class="legend-text">Kho dữ liệu (Data Store)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-shape" style="background: #4a5568; width: 60px; height: 2px; margin-top: 19px;"></div>
+                <span class="legend-text">Luồng dữ liệu (Data Flow)</span>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <h3>Mô tả các chức năng chính:</h3>
+            <ul>
+                <li><strong>Đăng nhập:</strong> Xác thực người dùng bằng username và password</li>
+                <li><strong>Xác thực:</strong> Kiểm tra thông tin đăng nhập và tạo session/token</li>
+                <li><strong>Đăng xuất:</strong> Hủy session và token của người dùng</li>
+                <li><strong>Quản lý session:</strong> Tạo, lưu trữ và quản lý các session đăng nhập</li>
+                <li><strong>Phân quyền:</strong> Kiểm tra quyền truy cập của người dùng vào các chức năng</li>
+                <li><strong>Bảo mật mật khẩu:</strong> Mã hóa và lưu trữ mật khẩu an toàn (hash)</li>
+                <li><strong>Ghi log:</strong> Ghi lại lịch sử đăng nhập, đăng xuất và các hoạt động quan trọng</li>
+                <li><strong>Xác thực token:</strong> Kiểm tra tính hợp lệ của token khi người dùng truy cập hệ thống</li>
+                <li><strong>Quản lý người dùng:</strong> Tạo, cập nhật, xóa tài khoản người dùng (dành cho quản trị viên)</li>
+                <li><strong>Thống kê truy cập:</strong> Cung cấp báo cáo về hoạt động đăng nhập của người dùng</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.process, .external-entity, .data-store').forEach(element => {
+            element.addEventListener('mouseenter', function() {
+                this.style.filter = 'drop-shadow(0 4px 8px rgba(0,0,0,0.3))';
+            });
+            element.addEventListener('mouseleave', function() {
+                this.style.filter = 'none';
+            });
+        });
+    </script>
+</body>
+</html>
+
+

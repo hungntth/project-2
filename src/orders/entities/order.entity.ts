@@ -10,7 +10,6 @@ import {
 } from 'typeorm';
 import { OrderStatus } from '../dto/update-order-status.dto';
 import { Customer } from '../../customers/entities/customer.entity';
-import { Employee } from '../../employees/entities/employee.entity';
 
 @Entity('orders')
 export class Order {
@@ -26,13 +25,6 @@ export class Order {
   @ManyToOne(() => Customer)
   @JoinColumn({ name: 'customerId' })
   customer?: Customer;
-
-  @Column({ nullable: true })
-  employeeId?: string;
-
-  @ManyToOne(() => Employee, { nullable: true })
-  @JoinColumn({ name: 'employeeId' })
-  employee?: Employee;
 
   @OneToMany(() => OrderItem, (item) => item.order, { cascade: true })
   items: OrderItem[];

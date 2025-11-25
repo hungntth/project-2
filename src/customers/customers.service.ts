@@ -24,7 +24,7 @@ export class CustomersService {
   async findOne(id: string): Promise<Customer> {
     const customer = await this.customerRepository.findOne({ where: { id } });
     if (!customer) {
-      throw new NotFoundException(`Customer with ID ${id} not found`);
+      throw new NotFoundException(`Không tìm thấy khách hàng với ID ${id}`);
     }
     return customer;
   }

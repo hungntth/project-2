@@ -43,8 +43,8 @@ export class ProductsController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    this.productsService.remove(id);
+  async remove(@Param('id') id: string) {
+    await this.productsService.remove(id);
     return { message: 'Product deleted successfully' };
   }
 }

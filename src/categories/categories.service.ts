@@ -29,7 +29,7 @@ export class CategoriesService {
       relations: ['parent', 'children'],
     });
     if (!category) {
-      throw new NotFoundException(`Category with ID ${id} not found`);
+      throw new NotFoundException(`Không tìm thấy danh mục với ID ${id}`);
     }
     return category;
   }

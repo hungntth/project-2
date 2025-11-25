@@ -49,8 +49,8 @@ export class CustomersController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    this.customersService.remove(id);
+  async remove(@Param('id') id: string) {
+    await this.customersService.remove(id);
     return { message: 'Customer deleted successfully' };
   }
 }

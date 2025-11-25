@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mô hình mức đỉnh - Quản lý Đơn hàng</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #718096;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+        }
+
+        .diagram-container {
+            position: relative;
+            width: 100%;
+            height: 800px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            background: #f7fafc;
+            overflow: auto;
+        }
+
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Styling cho các hình dạng */
+        .process {
+            fill: #f5576c;
+            stroke: #c53030;
+            stroke-width: 2;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .process:hover {
+            fill: #e53e3e;
+            transform: scale(1.05);
+        }
+
+        .process-text {
+            fill: white;
+            font-size: 14px;
+            font-weight: bold;
+            text-anchor: middle;
+            pointer-events: none;
+        }
+
+        .external-entity {
+            fill: #48bb78;
+            stroke: #2f855a;
+            stroke-width: 2;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .external-entity:hover {
+            fill: #38a169;
+            transform: scale(1.05);
+        }
+
+        .external-entity-text {
+            fill: white;
+            font-size: 13px;
+            font-weight: bold;
+            text-anchor: middle;
+            pointer-events: none;
+        }
+
+        .data-store {
+            fill: #ed8936;
+            stroke: #c05621;
+            stroke-width: 2;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .data-store:hover {
+            fill: #dd6b20;
+            transform: scale(1.05);
+        }
+
+        .data-store-text {
+            fill: white;
+            font-size: 12px;
+            font-weight: bold;
+            text-anchor: middle;
+            pointer-events: none;
+        }
+
+        .arrow {
+            stroke: #4a5568;
+            stroke-width: 2;
+            fill: none;
+            marker-end: url(#arrowhead);
+        }
+
+        .arrow-label {
+            fill: #2d3748;
+            font-size: 11px;
+            font-weight: 500;
+            background: white;
+            padding: 2px 4px;
+        }
+
+        .legend {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f7fafc;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .legend-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+
+        .legend-item {
+            display: inline-block;
+            margin: 10px 20px;
+            vertical-align: top;
+        }
+
+        .legend-shape {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+            vertical-align: middle;
+            border-radius: 5px;
+        }
+
+        .legend-text {
+            display: inline-block;
+            vertical-align: middle;
+            color: #4a5568;
+            font-size: 14px;
+        }
+
+        .info-box {
+            margin-top: 30px;
+            padding: 20px;
+            background: #fff5f5;
+            border-left: 4px solid #f5576c;
+            border-radius: 5px;
+        }
+
+        .info-box h3 {
+            color: #c53030;
+            margin-bottom: 10px;
+        }
+
+        .info-box ul {
+            margin-left: 20px;
+            color: #2d3748;
+        }
+
+        .info-box li {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>MÔ HÌNH MỨC ĐỈNH (DFD Level 0)</h1>
+        <p class="subtitle">Hệ thống Quản lý Đơn hàng</p>
+
+        <div class="diagram-container">
+            <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+                <!-- Arrow marker definition -->
+                <defs>
+                    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                        <polygon points="0 0, 10 3, 0 6" fill="#4a5568" />
+                    </marker>
+                </defs>
+
+                <!-- Central Process: Hệ thống Quản lý Đơn hàng -->
+                <rect x="450" y="300" width="300" height="200" rx="10" class="process" id="main-process"/>
+                <text x="600" y="410" class="process-text">HỆ THỐNG</text>
+                <text x="600" y="430" class="process-text">QUẢN LÝ</text>
+                <text x="600" y="450" class="process-text">ĐƠN HÀNG</text>
+
+                <!-- External Entities -->
+                <!-- Khách hàng -->
+                <rect x="50" y="100" width="120" height="80" rx="5" class="external-entity"/>
+                <text x="110" y="145" class="external-entity-text">KHÁCH</text>
+                <text x="110" y="165" class="external-entity-text">HÀNG</text>
+
+                <!-- Nhân viên bán hàng -->
+                <rect x="50" y="250" width="120" height="80" rx="5" class="external-entity"/>
+                <text x="110" y="285" class="external-entity-text">NHÂN VIÊN</text>
+                <text x="110" y="305" class="external-entity-text">BÁN HÀNG</text>
+
+                <!-- Hệ thống Kho hàng -->
+                <rect x="50" y="500" width="120" height="80" rx="5" class="external-entity"/>
+                <text x="110" y="535" class="external-entity-text">HỆ THỐNG</text>
+                <text x="110" y="555" class="external-entity-text">KHO HÀNG</text>
+
+                <!-- Hệ thống Thanh toán -->
+                <rect x="1030" y="100" width="120" height="80" rx="5" class="external-entity"/>
+                <text x="1090" y="130" class="external-entity-text">HỆ THỐNG</text>
+                <text x="1090" y="150" class="external-entity-text">THANH TOÁN</text>
+
+                <!-- Hệ thống Khuyến mãi -->
+                <rect x="1030" y="250" width="120" height="80" rx="5" class="external-entity"/>
+                <text x="1090" y="285" class="external-entity-text">HỆ THỐNG</text>
+                <text x="1090" y="305" class="external-entity-text">KHUYẾN MÃI</text>
+
+                <!-- Data Stores -->
+                <!-- Database Đơn hàng -->
+                <rect x="200" y="600" width="150" height="100" rx="5" class="data-store"/>
+                <text x="275" y="640" class="data-store-text">DATABASE</text>
+                <text x="275" y="660" class="data-store-text">ĐƠN HÀNG</text>
+                <text x="275" y="680" class="data-store-text">(Orders)</text>
+
+                <!-- Database Khách hàng -->
+                <rect x="500" y="600" width="150" height="100" rx="5" class="data-store"/>
+                <text x="575" y="640" class="data-store-text">DATABASE</text>
+                <text x="575" y="660" class="data-store-text">KHÁCH HÀNG</text>
+                <text x="575" y="680" class="data-store-text">(Customers)</text>
+
+                <!-- Database Sản phẩm -->
+                <rect x="850" y="600" width="150" height="100" rx="5" class="data-store"/>
+                <text x="925" y="640" class="data-store-text">DATABASE</text>
+                <text x="925" y="660" class="data-store-text">SẢN PHẨM</text>
+                <text x="925" y="680" class="data-store-text">(Products)</text>
+
+                <!-- Data Flows -->
+                <!-- Khách hàng -> Hệ thống -->
+                <path d="M 170 140 L 450 380" class="arrow"/>
+                <text x="250" y="135" class="arrow-label">Yêu cầu tạo đơn hàng</text>
+                <text x="250" y="150" class="arrow-label">Thông tin đặt hàng</text>
+
+                <path d="M 450 380 L 170 140" class="arrow"/>
+                <text x="250" y="105" class="arrow-label">Xác nhận đơn hàng</text>
+                <text x="250" y="120" class="arrow-label">Hóa đơn</text>
+
+                <!-- Nhân viên bán hàng -> Hệ thống -->
+                <path d="M 170 290 L 450 400" class="arrow"/>
+                <text x="250" y="390" class="arrow-label">Tạo đơn hàng</text>
+                <text x="250" y="405" class="arrow-label">Cập nhật trạng thái</text>
+                <text x="250" y="420" class="arrow-label">Hủy đơn hàng</text>
+
+                <path d="M 450 400 L 170 290" class="arrow"/>
+                <text x="250" y="360" class="arrow-label">Danh sách đơn hàng</text>
+                <text x="250" y="375" class="arrow-label">Chi tiết đơn hàng</text>
+
+                <!-- Hệ thống Kho hàng -> Hệ thống -->
+                <path d="M 170 540 L 450 480" class="arrow"/>
+                <text x="250" y="485" class="arrow-label">Kiểm tra tồn kho</text>
+                <text x="250" y="500" class="arrow-label">Yêu cầu xuất kho</text>
+
+                <path d="M 450 480 L 170 540" class="arrow"/>
+                <text x="250" y="455" class="arrow-label">Thông tin tồn kho</text>
+                <text x="250" y="470" class="arrow-label">Xác nhận xuất kho</text>
+
+                <!-- Hệ thống -> Database Đơn hàng -->
+                <path d="M 500 500 L 275 600" class="arrow"/>
+                <text x="350" y="545" class="arrow-label">Ghi đơn hàng</text>
+                <text x="350" y="560" class="arrow-label">Cập nhật trạng thái</text>
+
+                <path d="M 275 600 L 500 500" class="arrow"/>
+                <text x="350" y="530" class="arrow-label">Dữ liệu đơn hàng</text>
+                <text x="350" y="515" class="arrow-label">Lịch sử đơn hàng</text>
+
+                <!-- Hệ thống -> Database Khách hàng -->
+                <path d="M 600 500 L 575 600" class="arrow"/>
+                <text x="580" y="545" class="arrow-label">Đọc thông tin</text>
+                <text x="580" y="560" class="arrow-label">khách hàng</text>
+
+                <path d="M 575 600 L 600 500" class="arrow"/>
+                <text x="580" y="530" class="arrow-label">Thông tin</text>
+                <text x="580" y="515" class="arrow-label">khách hàng</text>
+
+                <!-- Hệ thống -> Database Sản phẩm -->
+                <path d="M 700 500 L 925 600" class="arrow"/>
+                <text x="800" y="545" class="arrow-label">Đọc thông tin</text>
+                <text x="800" y="560" class="arrow-label">sản phẩm</text>
+
+                <path d="M 925 600 L 700 500" class="arrow"/>
+                <text x="800" y="530" class="arrow-label">Thông tin</text>
+                <text x="800" y="515" class="arrow-label">sản phẩm, giá</text>
+
+                <!-- Hệ thống Thanh toán -> Hệ thống -->
+                <path d="M 1030 140 L 750 380" class="arrow"/>
+                <text x="850" y="235" class="arrow-label">Yêu cầu thanh toán</text>
+
+                <path d="M 750 380 L 1030 140" class="arrow"/>
+                <text x="850" y="205" class="arrow-label">Thông tin đơn hàng</text>
+                <text x="850" y="220" class="arrow-label">Tổng tiền</text>
+
+                <!-- Hệ thống Khuyến mãi -> Hệ thống -->
+                <path d="M 1030 290 L 750 400" class="arrow"/>
+                <text x="850" y="340" class="arrow-label">Yêu cầu áp dụng</text>
+                <text x="850" y="355" class="arrow-label">khuyến mãi</text>
+
+                <path d="M 750 400 L 1030 290" class="arrow"/>
+                <text x="850" y="310" class="arrow-label">Giảm giá</text>
+                <text x="850" y="325" class="arrow-label">Thông tin khuyến mãi</text>
+            </svg>
+        </div>
+
+        <div class="legend">
+            <div class="legend-title">Chú giải ký hiệu:</div>
+            <div class="legend-item">
+                <div class="legend-shape" style="background: #f5576c;"></div>
+                <span class="legend-text">Quy trình xử lý (Process)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-shape" style="background: #48bb78;"></div>
+                <span class="legend-text">Tác nhân bên ngoài (External Entity)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-shape" style="background: #ed8936;"></div>
+                <span class="legend-text">Kho dữ liệu (Data Store)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-shape" style="background: #4a5568; width: 60px; height: 2px; margin-top: 19px;"></div>
+                <span class="legend-text">Luồng dữ liệu (Data Flow)</span>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <h3>Mô tả các chức năng chính:</h3>
+            <ul>
+                <li><strong>Tạo đơn hàng:</strong> Tạo đơn hàng mới với thông tin khách hàng, sản phẩm, số lượng</li>
+                <li><strong>Xem danh sách đơn hàng:</strong> Hiển thị tất cả đơn hàng với khả năng lọc theo trạng thái, ngày tháng</li>
+                <li><strong>Xem chi tiết đơn hàng:</strong> Xem thông tin chi tiết của một đơn hàng cụ thể</li>
+                <li><strong>Cập nhật đơn hàng:</strong> Chỉnh sửa thông tin đơn hàng (sản phẩm, số lượng, ghi chú)</li>
+                <li><strong>Cập nhật trạng thái:</strong> Thay đổi trạng thái đơn hàng (PENDING, CONFIRMED, PROCESSING, SHIPPED, DELIVERED, CANCELLED)</li>
+                <li><strong>Hủy đơn hàng:</strong> Xóa/hủy đơn hàng khi cần thiết</li>
+                <li><strong>Tính toán tự động:</strong> Tính tổng tiền, thuế, giảm giá dựa trên sản phẩm và khuyến mãi</li>
+                <li><strong>Xuất hóa đơn:</strong> Tạo và xuất hóa đơn cho đơn hàng</li>
+                <li><strong>Tích hợp kho hàng:</strong> Kiểm tra tồn kho và yêu cầu xuất kho khi tạo đơn hàng</li>
+                <li><strong>Áp dụng khuyến mãi:</strong> Tính toán giảm giá từ các chương trình khuyến mãi</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Thêm hiệu ứng tương tác
+        document.querySelectorAll('.process, .external-entity, .data-store').forEach(element => {
+            element.addEventListener('mouseenter', function() {
+                this.style.filter = 'drop-shadow(0 4px 8px rgba(0,0,0,0.3))';
+            });
+            element.addEventListener('mouseleave', function() {
+                this.style.filter = 'none';
+            });
+        });
+    </script>
+</body>
+</html>
+
+

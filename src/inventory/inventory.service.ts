@@ -10,6 +10,7 @@ import { InventoryPeriod } from './entities/inventory-period.entity';
 import { ImportInventoryDto } from './dto/import-inventory.dto';
 import { ExportInventoryDto } from './dto/export-inventory.dto';
 import { AdjustInventoryDto } from './dto/adjust-inventory.dto';
+import { Product } from '../products/entities/product.entity';
 
 @Injectable()
 export class InventoryService {
@@ -20,6 +21,8 @@ export class InventoryService {
     private readonly transactionRepository: Repository<InventoryTransaction>,
     @InjectRepository(InventoryPeriod)
     private readonly periodRepository: Repository<InventoryPeriod>,
+    @InjectRepository(Product)
+    private readonly productRepository: Repository<Product>,
   ) {}
 
   async findAll(): Promise<Inventory[]> {
@@ -51,7 +54,29 @@ export class InventoryService {
   }
 
   async import(importDto: ImportInventoryDto): Promise<InventoryTransaction> {
-    const current = await this.ensureInventory(importDto.productId);
+    // Nếu có productName và productId là 'new' hoặc rỗng, tạo sản phẩm mới
+    let productId = importDto.productId;
+    
+    if (importDto.productName && (productId === 'new' || !productId)) {
+      // Tạo sản phẩm mới chỉ với tên
+      const newProduct = this.productRepository.create({
+        name: importDto.productName,
+      });
+      const savedProduct = await this.productRepository.save(newProduct);
+      productId = savedProduct.id;
+    } else if (!productId) {
+      throw new BadRequestException('Vui lòng cung cấp ID sản phẩm hoặc tên sản phẩm');
+    }
+
+    // Kiểm tra sản phẩm có tồn tại không
+    const product = await this.productRepository.findOne({
+      where: { id: productId },
+    });
+    if (!product) {
+      throw new BadRequestException(`Không tìm thấy sản phẩm với ID ${productId}`);
+    }
+
+    const current = await this.ensureInventory(productId);
     const newQuantity = current.quantity + importDto.quantity;
 
     await this.inventoryRepository.save({
@@ -62,7 +87,7 @@ export class InventoryService {
     });
 
     const transaction = this.transactionRepository.create({
-      productId: importDto.productId,
+      productId: productId,
       type: InventoryTransactionType.IMPORT,
       quantity: importDto.quantity,
       previousQuantity: current.quantity,
@@ -75,7 +100,7 @@ export class InventoryService {
 
     // Cập nhật tồn kho theo kỳ
     await this.updatePeriodInventory(
-      importDto.productId,
+      productId,
       InventoryTransactionType.IMPORT,
       importDto.quantity,
       current.quantity,
@@ -99,7 +124,7 @@ export class InventoryService {
       : current.availableQuantity;
 
     if (availableQty < exportDto.quantity) {
-      throw new BadRequestException('Insufficient inventory');
+      throw new BadRequestException(`Tồn kho không đủ. Số lượng khả dụng: ${availableQty}, yêu cầu: ${exportDto.quantity}`);
     }
 
     const newQuantity = current.quantity - exportDto.quantity;
@@ -184,7 +209,7 @@ export class InventoryService {
     const where = productId ? { productId } : {};
     return this.transactionRepository.find({
       where,
-      relations: ['product'],
+      relations: ['product', 'supplier'],
       order: { createdAt: 'DESC' },
     });
   }

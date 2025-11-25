@@ -24,7 +24,7 @@ export class OrdersService {
 
   async create(createOrderDto: CreateOrderDto): Promise<Order> {
     if (!createOrderDto.items || createOrderDto.items.length === 0) {
-      throw new BadRequestException('Order must have at least one item');
+      throw new BadRequestException('Đơn hàng phải có ít nhất một sản phẩm');
     }
 
     const items = createOrderDto.items.map((item) =>
@@ -42,7 +42,6 @@ export class OrdersService {
     const order = this.ordersRepository.create({
       orderNumber: await this.generateOrderNumber(),
       customerId: createOrderDto.customerId,
-      employeeId: createOrderDto.employeeId,
       items,
       subtotal,
       discount,
@@ -87,7 +86,7 @@ export class OrdersService {
     });
 
     if (!order) {
-      throw new NotFoundException(`Order with ID ${id} not found`);
+      throw new NotFoundException(`Không tìm thấy đơn hàng với ID ${id}`);
     }
 
     return order;
@@ -97,11 +96,11 @@ export class OrdersService {
     const order = await this.findOne(id);
 
     if (order.status !== OrderStatus.PENDING) {
-      throw new BadRequestException('Can only update pending orders');
+      throw new BadRequestException('Chỉ có thể cập nhật đơn hàng đang chờ xử lý');
     }
 
     if (updateOrderDto.items && updateOrderDto.items.length === 0) {
-      throw new BadRequestException('Order must have at least one item');
+      throw new BadRequestException('Đơn hàng phải có ít nhất một sản phẩm');
     }
 
     if (updateOrderDto.items) {
@@ -118,10 +117,6 @@ export class OrdersService {
 
     if (updateOrderDto.customerId !== undefined) {
       order.customerId = updateOrderDto.customerId;
-    }
-
-    if (updateOrderDto.employeeId !== undefined) {
-      order.employeeId = updateOrderDto.employeeId;
     }
 
     if (updateOrderDto.notes !== undefined) {
@@ -159,7 +154,7 @@ export class OrdersService {
       order.status !== OrderStatus.CANCELLED
     ) {
       throw new BadRequestException(
-        'Can only cancel pending or already cancelled orders',
+        'Chỉ có thể hủy đơn hàng đang chờ xử lý hoặc đã bị hủy',
       );
     }
 
